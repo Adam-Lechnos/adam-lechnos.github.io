@@ -1,8 +1,3 @@
-
-
-
-
-
 ### Blogs
 
 * [Enterprise Tech Notes](https://www.etnblog.com/)
