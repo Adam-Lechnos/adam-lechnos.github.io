@@ -2,9 +2,9 @@ title: DevOps Trials and Tribulations
 description: Musings on devops and risk management problems
 author: Adam M. Lechnos
 github: https://github.com/adam-lechnos
-about: Devops engineer in the fintech space with a background in GRC & Risk Management
+about: DevOps engineer in the fintech space with a background in GRC & Risk Management
 disqus_shortname: devopstrialstribs
-google_analytics: UA-XXXXXXXX-Y
+google_analytics: UA-47832702-1
 
 enableTags: true
 tagarray: []
@@ -39,7 +39,7 @@ urls:
     - text: XML Feed
       url: /feed.xml
 
-url: "https://adam-lechnos.github.io"
+url: "https://adamlechnos.com"
 baseurl: ""
 paginate: 20
 per_page: 20
