@@ -1,3 +1,57 @@
-theme: jekyll-theme-midnight
-title: Adam Lechnos' Landing Page
-description: Devops and other project based repos to grease the wheels of automation
+title: DevOps Trials and Tribulations
+description: Musings on devops and risk management problems
+author: Adam M. Lechnos
+github: https://github.com/adam-lechnos
+about: Devops engineer in the fintech space with a background in GRC & Risk Management
+disqus_shortname: devopstrialstribs
+google_analytics: UA-XXXXXXXX-Y
+
+enableTags: true
+tagarray: []
+
+#collections:
+#project:
+#output: true
+#permalink: /project/:path/
+
+social:
+    - icon: fa-twitter
+      link: "http://www.twitter.com/Adam_Lechnos"
+    - icon: fa-linkedin
+      link: "https://www.linkedin.com/in/adamlechnos"
+    - icon: fa-github
+      link: "https://github.com/adam-lechnos"
+
+share:
+  twitter_username: adam_lechnos
+
+urls:
+    - text: About Me
+      url: /about/
+      #- text: My Projects
+      #url: /projects/
+    - text: Code Repos
+      url: /repos
+    - text: Published Work
+      url: /published
+    - text: Other Interests
+      url: /other
+    - text: XML Feed
+      url: /feed.xml
+
+url: "https://adam-lechnos.github.io"
+baseurl: ""
+paginate: 20
+per_page: 20
+paginate_path: "/page/:num/"
+markdown: kramdown
+gems:
+  - jekyll-paginate
+  - jekyll-gist
+
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: all
+  ignore:
+    envs: ['development']

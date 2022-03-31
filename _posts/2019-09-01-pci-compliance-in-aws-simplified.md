@@ -1,12 +1,12 @@
-layout: post
-title: "PCI Compliance in AWS - Simplified (featured in (ISC)² Blog)"
-date: 2019-09-01
+---
+title: "PCI Compliance in AWS - Simplified (featured in ISC2 Blog)"
+date: 2019-09-01 12:00:00 -0000
 categories: GRC-and-Risk-Management PCI-Compliance
+---
 
-## PCI Compliance in AWS - Simplified (featured in ISC2 Blog)
+## PCI Compliance in AWS - Simplified
 
-**This blog post also featured in the ISC2 blog**
-* https://blog.isc2.org/isc2_blog/2019/10/pci-compliance-in-aws-simplified.html
+**This blog post also featured in the [(ISC)² Blog](https://blog.isc2.org/isc2_blog/2019/10/pci-compliance-in-aws-simplified.html)**
 
 Payment Card Industry Data Security Standards or PCI DSS, are a set of 12 requirements with over 300 controls which apply to any organization which stores, processes or transmits credit card data. Today, I will attempt to add some clarity around PCI compliance within AWS.
 
@@ -32,7 +32,7 @@ Like EC2, ECS and EKS are all deemed ‘Infrastructure’ based services. These 
 Using AWS Fargate in lieu of EC2 hosting Kubernetes would reduce the PCI compliance footprint as Fargate is considered a ‘Containerized’ service and hence, the degree of PCI compliance requirements is greatly reduced as per the AWS Shared Responsibility Model.
 The instantiation of Fargate within-in it’s own AWS Account and the endpoints it connects would be in scope. Fargate would not require network, OS level, and like EC2, nor physical level controls.
 
-#### Abstracted Services
+### Abstracted Services
 
 URL Load Balancers, API Gateways, and other ‘Abstracted’ services are services in which the degree of control is limited to the movement of data using AWS APIs. AWS handles network, OS, and physical controls therefore, minimizing PCI scope of work.
 
@@ -52,7 +52,7 @@ i.e, Vault provides configuration parameters for Docker Containers in Kubernetes
 Normally, if Abstracted services such as AWS S3 or Application Load Balancer transmits or stores CHD, these services fall with-in scope of PCI compliance. Since these services are considered ‘Abstracted’, network and OS level controls do not apply. If these services do not handle CHD, segmentation is assumed and therefore out of scope for PCI compliance even if located within the same CDE environment.
 
 
-#### Examples
+### Examples
 
 S3 Bucket without CHD
 An S3 bucket with-in the same VPC as the CDE in which no CHD is stored or passes, is not considered part of the CDE.
@@ -66,5 +66,5 @@ If we were to replace Kafka with AWS SQS, we eliminate the use of Infrastructure
 SQS with CHD
 If we were to replace Kafka with AWS SQS in which CHD would be stored and transmitted, only those endpoints in which SQS connects would fall with-in scope of PCI even if with-in the same CDE.
 
-#### Conclusion
+### Conclusion
 Within the newly created AWS PCI Zone, replacing Kubernetes on EC2 with Fargate and possibly Kafka with SQS, would eliminate many of the PCI requirements in that zone as a result of using only. Abstracted and Containerized services as mentioned in the preceding examples above.
