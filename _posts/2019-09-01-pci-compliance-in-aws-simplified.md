@@ -1,7 +1,7 @@
 ---
 title: "PCI Compliance in AWS - Simplified (featured in ISC2 Blog)"
 date: 2019-09-01 12:00:00 -0000
-categories: grc pci
+categories: grc
 ---
 
 ## PCI Compliance in AWS - Simplified
