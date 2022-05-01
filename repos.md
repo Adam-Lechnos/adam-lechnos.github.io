@@ -9,6 +9,7 @@ permalink: /repos/
 ### By Language
 #### [Devops](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Python](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Apython&type=repositories){:target="_blank" rel="noopener"}
+##### [Devops: Groovy](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Agroovy&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Bash](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Abash&type=repositories){:target="_blank" rel="noopener"}
 
 ### By Stack

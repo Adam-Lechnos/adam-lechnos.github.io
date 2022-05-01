@@ -19,6 +19,8 @@ social:
       link: "http://www.twitter.com/Adam_Lechnos"
     - icon: fa-linkedin
       link: "https://www.linkedin.com/in/adamlechnos"
+    - icon: fa-instagram
+      link: "https://www.instagram.com/adam_lechnos"
     - icon: fa-github
       link: "https://github.com/adam-lechnos"
 
