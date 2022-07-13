@@ -8,6 +8,7 @@ permalink: /repos/
 
 ### By Language
 #### [Devops](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops&type=repositories){:target="_blank" rel="noopener"}
+##### [Devops: Terraform (HCL)](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Aterraform&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Python](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Apython&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Groovy](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Agroovy&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Bash](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Abash&type=repositories){:target="_blank" rel="noopener"}
@@ -15,6 +16,10 @@ permalink: /repos/
 ### By Stack
 #### [Devops](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Monster Alerts](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Amonster-alerts&type=repositories){:target="_blank" rel="noopener"}
+##### [Devops: Terraform](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Aterraform&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Jenkins](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Ajenkins&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Linux](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Alinux&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: AWS](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Aaws&type=repositories){:target="_blank" rel="noopener"}
+
+### Wikis
+#### [Devops](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Awiki&type=repositories){:target="_blank" rel="noopener"}
