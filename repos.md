@@ -16,6 +16,7 @@ permalink: /repos/
 
 #### [For fun](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun&type=repositories){:target="_blank" rel="noopener"}
 ##### [For-fun: Python](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Apython&type=repositories){:target="_blank" rel="noopener"}
+##### [For-fun: Java](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Ajava&type=repositories){:target="_blank" rel="noopener"}
 
 ### By Stack/Purpose
 #### [Devops](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops&type=repositories){:target="_blank" rel="noopener"}
