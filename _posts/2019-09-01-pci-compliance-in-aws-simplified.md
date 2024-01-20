@@ -6,7 +6,7 @@ categories: grc pci
 
 ## PCI Compliance in AWS - Simplified
 
-**This blog post also featured in the [(ISC)² Blog](https://web.archive.org/web/20230327173643/https://blog.isc2.org/isc2_blog/2019/10/pci-compliance-in-aws-simplified.html)**
+**This blog post also featured in the [(ISC)² Blog](https://web.archive.org/web/20230327173643/https://blog.isc2.org/isc2_blog/2019/10/pci-compliance-in-aws-simplified.html){:target="_blank" rel="noopener"}**
 
 Payment Card Industry Data Security Standards or PCI DSS, are a set of 12 requirements with over 300 controls which apply to any organization which stores, processes or transmits credit card data. Today, I will attempt to add some clarity around PCI compliance within AWS.
 
