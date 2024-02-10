@@ -29,6 +29,9 @@ permalink: /repos/
 ##### [Devops: Linux](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Alinux&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: AWS](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Aaws&type=repositories){:target="_blank" rel="noopener"}
 
+#### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
+##### [Finance: Google Apps Script](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script&type=repositories){:target="_blank" rel="noopener"}
+
 #### [For fun](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun&type=repositories){:target="_blank" rel="noopener"}
 ##### [For-fun: Games](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Agame&type=repositories){:target="_blank" rel="noopener"}
 
