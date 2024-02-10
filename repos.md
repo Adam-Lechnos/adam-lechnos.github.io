@@ -14,6 +14,9 @@ permalink: /repos/
 ##### [Devops: JSON](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Ajson&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Bash](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Abash&type=repositories){:target="_blank" rel="noopener"}
 
+#### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
+##### [Finance: JavaScript](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Ajavascript&type=repositories){:target="_blank" rel="noopener"}
+
 #### [For fun](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun&type=repositories){:target="_blank" rel="noopener"}
 ##### [For-fun: Python](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Apython&type=repositories){:target="_blank" rel="noopener"}
 ##### [For-fun: Java](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Ajava&type=repositories){:target="_blank" rel="noopener"}
