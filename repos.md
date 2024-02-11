@@ -47,3 +47,8 @@ permalink: /repos/
 #### [Devops](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Awiki&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Jenkins](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Ajenkins+topic%3Awiki&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: JSON](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Ajson+topic%3Awiki&type=repositories){:target="_blank" rel="noopener"}
+
+\
+\
+<sup>**Legend**</sup>\
+<sup>(NSP): Northstar Provisions/Consulting</sup>
