@@ -36,7 +36,7 @@ permalink: /repos/
 ##### [Finance: Google Apps Script](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script&type=repositories){:target="_blank" rel="noopener"}
 ##### [Finance: Google Apps Script: Google Sheets](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing+topic%3Agoogle-apps-script+topic%3Agoogle-sheets&type=repositories){:target="_blank" rel="noopener"}
 
-#### [Project Management & Invoicing (NSP)](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
+#### [Project Management & Invoicing (NSP)](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing&type=repositories){:target="_blank" rel="noopener"}
 ##### [Project Management & Invoicing (NSP): Google Apps Script](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing+topic%3Agoogle-apps-script&type=repositories){:target="_blank" rel="noopener"}
 ##### [Project Management & Invoicing (NSP): Google Apps Script: Google Sheets](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script+topic%3Agoogle-sheets&type=repositories){:target="_blank" rel="noopener"}
 
