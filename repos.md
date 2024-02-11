@@ -17,6 +17,9 @@ permalink: /repos/
 #### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
 ##### [Finance: JavaScript](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Ajavascript&type=repositories){:target="_blank" rel="noopener"}
 
+#### [Project Management & Invoicing (NSP)](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing&type=repositories){:target="_blank" rel="noopener"}
+##### [Project Management & Invoicing (NSP): JavaScript](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing+topic%3Ajavascript&type=repositories){:target="_blank" rel="noopener"}
+
 #### [For fun](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun&type=repositories){:target="_blank" rel="noopener"}
 ##### [For-fun: Python](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Apython&type=repositories){:target="_blank" rel="noopener"}
 ##### [For-fun: Java](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Ajava&type=repositories){:target="_blank" rel="noopener"}
@@ -29,9 +32,13 @@ permalink: /repos/
 ##### [Devops: Linux](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Alinux&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: AWS](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Aaws&type=repositories){:target="_blank" rel="noopener"}
 
-#### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
+#### [Finance](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing&type=repositories){:target="_blank" rel="noopener"}
 ##### [Finance: Google Apps Script](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script&type=repositories){:target="_blank" rel="noopener"}
-##### [Finance: Google Apps Script: Google Sheets](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script+topic%3Agoogle-sheets&type=repositories){:target="_blank" rel="noopener"}
+##### [Finance: Google Apps Script: Google Sheets](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing+topic%3Agoogle-apps-script+topic%3Agoogle-sheets&type=repositories){:target="_blank" rel="noopener"}
+
+#### [Project Management & Invoicing (NSP)](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
+##### [Project Management & Invoicing (NSP): Google Apps Script](https://github.com/search?q=user%3Aadam-lechnos-nsprv++topic%3Aproject-management+topic%3Ainvoicing+topic%3Agoogle-apps-script&type=repositories){:target="_blank" rel="noopener"}
+##### [Project Management & Invoicing (NSP): Google Apps Script: Google Sheets](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script+topic%3Agoogle-sheets&type=repositories){:target="_blank" rel="noopener"}
 
 #### [For fun](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun&type=repositories){:target="_blank" rel="noopener"}
 ##### [For-fun: Games](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afor-fun+topic%3Agame&type=repositories){:target="_blank" rel="noopener"}
