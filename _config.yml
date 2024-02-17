@@ -30,6 +30,8 @@ share:
   twitter_username: adam_lechnos
 
 urls:
+    - text: Post Categories
+      url: /categories/
     - text: About Me
       url: /about/
       #- text: My Projects
