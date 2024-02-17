@@ -12,7 +12,7 @@ tagarray: []
 #collections:
 #project:
 #output: true
-#permalink: /project/:path/
+permalink: pretty
 
 social:
     - icon: fa-twitter
