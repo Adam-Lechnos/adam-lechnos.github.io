@@ -1,7 +1,7 @@
 ---
 title: "AWS CDK - Node/Tree Relationship"
 date: 2024-02-17 12:00:00 -0000
-categories: aws devops cdk iac
+categories: AWS DevOps
 ---
 
 ## AWS Cloud Development Kit (CDK) - Understanding the Node/Tree Relationship
@@ -18,5 +18,5 @@ categories: aws devops cdk iac
 * Subsequent AWS resources are instantiated `Stack` objects, such as the `bucketStack = new BucketStack(app, 'BucketStack')` instance created, which in turn inherits the `Construct` object.
 * Hence, each new instantiation of an AWS resource, is a child of the Construct, which is then added to the root Construct, `app` per the first `scope` argument for each instantiated resource's constructor.
   * i.e., handlerStack = new HandlerStack(`app`, 'HandlerStack', extendedProps..)
-* Resouces created inside resources, such as the `new LambdaFunction(this, 'LambdaFunction', FunctionProps)` Lambda functions, contains the first argument `this`, for the `scope` parameter, since this is the parent object, **handlerStack**, which inherits a `Construct` object.
+* Resouces created inside resources, such as the `new LambdaFunction(this, 'LambdaFunction', FunctionProps)` Lambda functions, contains the first argument `this`, for the `scope` parameter since this is the parent object, **handlerStack**, which inherits a `Construct` object.
 
