@@ -8,4 +8,4 @@ categories: aws devops cdk
 
 ### Diagram
 
-![AWS Cloud Development Kit Tree/Node Diagram](https://github.com/Adam-Lechnos/diagrams-devops/blob/main/images-exported/Devops-IaC-AWS_CDK_Tree_Node.drawio.png)
+![AWS Cloud Development Kit Tree/Node Diagram](https://github.com/Adam-Lechnos/diagrams-devops/blob/main/images-exported/Devops-IaC-AWS_CDK_Tree_Node.drawio.png?raw=true)
