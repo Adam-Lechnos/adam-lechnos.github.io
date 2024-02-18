@@ -12,7 +12,7 @@ tagarray: []
 #collections:
 #project:
 #output: true
-permalink: pretty
+#permalink: pretty
 
 social:
     - icon: fa-twitter
@@ -32,8 +32,8 @@ share:
 urls:
     - text: About Me
       url: /about/
-      #- text: My Projects
-      #url: /projects/
+    # - text: My Projects
+    #   url: /projects/
     - text: Code Repos
       url: /repos
     - text: Published Work
@@ -54,6 +54,7 @@ markdown: kramdown
 plugins:
   - jekyll-paginate
   - jekyll-gist
+
 
 compress_html:
   clippings: all
