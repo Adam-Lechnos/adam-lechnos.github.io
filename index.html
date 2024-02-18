@@ -12,6 +12,23 @@ title: Adam M. Lechnos
       <li><a href="{{ post.url }}">{{ post.title }}</a> &raquo; <i><span>{{ post.date | date_to_string }}</span></i></li>
     {% endfor %}
   </ol>
+<br>
+  <subheader class="post-header">
+  <h4 class="post-subtitle">Articles by category: {{ page.categories }}</h4>
+</subheader>
+<div class="post-content">
+  <hr />
+  {% for category in site.categories %}
+    {% capture category_slug %}{{ category | first }}{% endcapture %}
+    {% for c_slug in category_slug %}
+      {% if c_slug == page.categories %}
+        <button class="btn btn-sm btn-default active btn-tags">{{ c_slug }}</button>
+      {% else %}
+        <a href="/category/{{ c_slug }}" class="btn btn-sm btn-default btn-tags">{{ c_slug }}</a>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</div>
 
   <!-- Pagination links -->
   {% if paginator.total_pages > 1 %}
@@ -23,6 +40,7 @@ title: Adam M. Lechnos
       {% endif %}
 
       <li><a href="/">First</a></li>
+      
 
       {% for page in (1..paginator.total_pages) %}
         {% if page == paginator.page %}

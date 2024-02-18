@@ -2,7 +2,7 @@ title: The Risky Pipeline
 description: Code repos, documentation, and thoughts on devops tech stacks, including infosec and risk management topics
 author: Adam M. Lechnos
 github: https://github.com/adam-lechnos
-about: Devops engineer with a background in information security
+about: DevOps engineer with an Infosec Consulting and Finance background.
 disqus_shortname: risky-pipeline
 google_analytics: UA-47832702-1
 
@@ -30,17 +30,17 @@ share:
   twitter_username: adam_lechnos
 
 urls:
-    - text: Categories
-      url: /category/all
-    # - text: My Projects
-    #   url: /projects/
-    - text: Code Repos
+    # - text: Categories
+    #   url: /categories
+    - text: Projects
+      url: /projects/
+    - text: Code & Artifacts
       url: /repos
     - text: Published Work
       url: /published
     - text: Other Interests
       url: /other
-    - text: About Me
+    - text: About
       url: /about/
     #- text: Post Categories
      # url: /categories/

@@ -1,7 +1,7 @@
 ---
 title: "AWS CDK - Node & Tree Relationship"
 date: 2024-02-17 12:00:00 -0000
-categories: aws devops all
+categories: aws devops
 ---
 
 ## AWS Cloud Development Kit (CDK) - Understanding the Node/Tree Relationship
@@ -19,4 +19,6 @@ categories: aws devops all
 * Hence, each new instantiation of an AWS resource, is a child of the Construct, which is then added to the root Construct, `app` per the first `scope` argument for each instantiated resource's constructor.
   * i.e., handlerStack = new HandlerStack(`app`, 'HandlerStack', extendedProps..)
 * Resouces created inside resources, such as the `new LambdaFunction(this, 'LambdaFunction', FunctionProps)` Lambda functions, contains the first argument `this`, for the `scope` parameter since this is the parent object, **handlerStack**, which inherits a `Construct` object.
+
+To button up the tree node relationship, each object is inherited from `Construst`, which in turn is nested within each other via the `scope` parameter, either as *this* when scoping in as a child of a resource, such as *handlerStack*, or as *app* for each new instantiated resource. Each nested resource is scoped within it's parent, and each resource is scoped within its root node, `app`.
 

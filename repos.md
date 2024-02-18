@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Code Repos
+title: Code & Artifact Repos
 permalink: /repos/
 ---
 
