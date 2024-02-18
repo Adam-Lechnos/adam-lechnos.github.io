@@ -44,8 +44,8 @@ urls:
       url: /about/
     #- text: Post Categories
      # url: /categories/
-    - text: XML Feed
-      url: /feed.xml
+    # - text: XML Feed
+    #   url: /feed.xml
 
 url: "https://adamlechnos.com"
 baseurl: ""
