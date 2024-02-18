@@ -30,8 +30,8 @@ share:
   twitter_username: adam_lechnos
 
 urls:
-    - text: About Me
-      url: /about/
+    - text: Categories
+      url: /category/all
     # - text: My Projects
     #   url: /projects/
     - text: Code Repos
@@ -40,6 +40,8 @@ urls:
       url: /published
     - text: Other Interests
       url: /other
+    - text: About Me
+      url: /about/
     #- text: Post Categories
      # url: /categories/
     - text: XML Feed
