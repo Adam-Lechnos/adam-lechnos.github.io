@@ -40,7 +40,7 @@ urls:
       url: /published
     - text: Other Interests
       url: /other
-    - text: About
+    - text: About Me
       url: /about/
     #- text: Post Categories
      # url: /categories/
