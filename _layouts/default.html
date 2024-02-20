@@ -97,8 +97,10 @@ layout: compress
     <link rel="stylesheet" href="/static/css/projects.css">
     <link rel="stylesheet" href="/static/css/main.css">
 
+    {% seo %}
+    
     {% if jekyll.environment == 'production' and site.google_analytics %}
-    {% include analytics.html %}
+      {% include analytics.html %}
     {% endif %}
 
   </head>

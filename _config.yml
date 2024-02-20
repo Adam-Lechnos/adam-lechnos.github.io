@@ -1,10 +1,14 @@
 title: The Risky Pipeline
-description: DevOps-related code, projects, architecture, and other quips.
+tagline: Code, Artifacs, and Projects, from a DevOps Engineer
+description: DevOps-related code, projects, architectural diagrams, and other quips.
 author: Adam M. Lechnos
 github: https://github.com/adam-lechnos
 about: DevOps engineer with an Infosec Consulting and Finance hobbyist background.
 disqus_shortname: risky-pipeline
 google_analytics: G-LQ5YLRDF06
+twitter: 
+  username: adam_lechnos
+  card: summary 
 
 enableTags: true
 tagarray: []
@@ -25,6 +29,15 @@ social:
       link: "https://github.com/adam-lechnos"
     - icon: fa-stack-overflow
       link: "https://stackoverflow.com/users/6710431/adam-m-lechnos"
+    # This part below is for SEO
+    - name: Adam M. Lechnos
+      links:
+        - http://www.twitter.com/Adam_Lechnos
+        - https://www.linkedin.com/in/adamlechnos
+        - https://www.instagram.com/adam_lechnos
+        - https://github.com/adam-lechnos
+        - https://stackoverflow.com/users/6710431/adam-m-lechnos
+
 
 share:
   twitter_username: adam_lechnos
@@ -56,6 +69,7 @@ markdown: kramdown
 plugins:
   - jekyll-paginate
   - jekyll-gist
+  - jekyll-seo-tag
 
 
 compress_html:
