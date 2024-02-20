@@ -78,3 +78,7 @@ compress_html:
   endings: all
   ignore:
     envs: ['development']
+
+# Use for referencing external content from GitHub repo, dedicated to diagrams and charts, appended with correct repo folder
+github-content: https://github-content-cache.adamlechnos.com/Adam-Lechnos/diagrams-charts/blob/main
+github-project-image: https://github-content-cache.adamlechnos.com/Adam-Lechnos/
