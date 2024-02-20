@@ -1,10 +1,10 @@
 [
 	{
-		"slug": "github-actions-AWS",
-		"name": "GitHub Actions with AWS",
-		"image": "placeholder.jpg",
-		"url": "https://www.google.com",
-		"date": "Jan 2024",
-		"tags": ["GitHub Actions", "AWS", "Kubernetes", "Helm", "Docker"]
+		"slug": "jenkins-terraform-ansible-aws",
+		"name": "Jenkins, Terraform, and Ansible",
+		"image": "https://github.com/Adam-Lechnos/jenkins-tf-ansible-pipeline-sample/raw/main/images/jenkins_ansible_aws.png?raw=true",
+		"url": "https://github.com/Adam-Lechnos/jenkins-tf-ansible-pipeline-sample",
+		"date": "Jan 2023",
+		"tags": ["Jenkins", "Terraform", "Ansible", "AWS"]
 	}
 ]
