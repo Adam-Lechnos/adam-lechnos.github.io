@@ -1,0 +1,360 @@
+---
+title: "AWS CDK - Understanding Amazon Cognito ID Tokens and Credentials Workflow"
+date: 2023-02-20 12:00:00 -0000
+categories: aws devops
+---
+
+### Diagram
+
+#### [Amazon Cognito Client Workflow (draw.io viewer)](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Devops-IaC-AWS_CDK_Cognito.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FAdam-Lechnos%2Fdiagrams-charts%2Fmain%2Fdevops%2FDevops-IaC-AWS_CDK_Cognito.drawio){:target="_blank" rel="noopener"}
+
+![Amazon Cognito Client Workflow]({{ site.github-content }}/devops/Devops-IaC-AWS_CDK_Cognito.drawio.svg?raw=true)
+
+### The Moving Pieces 
+Components of Amazon Cognito which are part of the authentication and authorization flow:
+
+#### Cognito User Pools - Authentication
+* Contains a directory of users & groups or, may be delegated to a Federated Identity Provider for sign-in experience, such as Google, Facebook, Amazon, Apple, SAML, or OIDC (OpenID Connect).
+* Groups created within the User Pool are associatged with IAM ([AWS Identity and Access Management](https://aws.amazon.com/iam/)) roles, assumed by the user for performing tasks within AWS, such as reading S3 Buckets.
+  * Each group may have a seperate IAM Role configured, for allowing delineated permissions amongst disparate [managed group members](https://docs.aws.amazon.com/cognito/latest/developerguide/managing-users.html?icmpid=docs_cognito_console_help_panel).
+* App intergration settings, where app clients are defined and its token expiration, authentication flows, OAUTH 2.0 grant types, and OpenID Connnect Scopes and Identity Providers are defined.
+  * Authentication flow options: ALLOW_ADMIN_USER_PASSWORD_AUTH, ALLOW_USER_PASSWORD_AUTH, ALLOW_REFRESH_TOKEN_AUTH, ALLOW_USER_PASSWORD_AUTH, and ALLOW_USER_SRP_AUTH.
+  * OAuth 2.0 grant type options: 
+    * Authorization code grant, provides an authorization code as the response
+    * Implicit grant, specifies that the client should get the access token (and optionally, ID token, based on scopes) directly. (exposes the OAuth (Access) token within the URL)
+  * OpenID Connect Scopes, at least one scope is required to specify the attributes the app client can retrieve for access. Scopes include:
+    * aws.cognito.sigin.user.admin, OpenID, Email, Phone, and Profile (the last three options also require OpenID to be selected)
+  * Identity providers, which are made available to the client. Some or all of your user pool external Identity Providers may be selected to authenticate your users.
+    * Selecting atleast `Cognito user pool` enables authentication via the Cognito User Pool, which enables access to its Federated Identity Providers, or, its own internal set of users.
+  * Adding atleast a [Configured User Pool Domain](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-assign-domain.html?icmpid=docs_cognito_console_help_panel) within the App Integration tab provides a Hosted UI for the user sign-in experience.
+  * The client is where the Authentication flow session duration, refresh token expiration, access token expiration, ID token expiration, and other advanced authentication settings are specified.
+
+#### Cognito Identity Pools - Authorization
+* Grants users access to AWS resources, and are associated with Identity Pools as the Identity Provider. External Identity Providers may be selected here as well, bypassing the use of Amazon Cognito User Pools.
+* Default Authenticated and Unauthenticated (Guest Access) roles may be specified, wherby the ID pool is the trusted resource assuming the role on behalf of the user.
+* Custom roles may be added then mapped via the user pool and its assigned groups (Admin group members will be assigned the Admin IAM role for example).
+  * This mapping would be used either in conjunction or in lieu of the IAM roles associated with groups created within the Cognito User Pools, depending on how the role mappings are configured.
+      * Rule based role mappings will match claim values, whereas Token based role mappings will perform a lookup of the IAM Role associated with `cognito:role` and `cognito:preferred_role` claims injected from the Cognito Identity Pool. 
+  * Using a Federated Identity Provider within the User Pool would require mapping the custom roles via the claim values to IAM Roles. Rule based role mappings are required. (more on this below)
+* The ARN of the assigned user's role get injected into the [ID Token](https://auth0.com/docs/secure/tokens/id-tokens/id-token-structure) as `"cognito:role": [<list of role ARNs>]`.
+* In addition, `"cognito:preferred_role":"<role ARN>"` gets injected, based on the role with the best (lowest) precedence value. If there is only one role, this will be the value.
+  * i.e., if authenticated, but no group is assigned within the user pool, use the default role assoicated with the Authenticated settings.
+
+#### AWS Amplify - Authentication Mechanism
+* Configure Congito as the authentication provider
+* Present authentication frontend
+* Fetch ID Token upon authentication and pass it around where required
+* May use its own Federated Provider such as Google, Apple, etc.
+
+### Technical Terms
+In Cognito, both *ID Tokens* and *Access Tokens* include a `cognito:groups` claims that contains user group memberships in the Cognito User Pool. Cognito returns both ID Tokens and Access Tokens.
+
+#### Identity Provider (IdP)
+* Provides a database of user identities and their details, such as name, email, etc., and may be provided via a federated external provider, such as Google, Facebook, Amazon, Apple, or any OpenID Connect or SAML provider.
+* Refer to AWS' developer guide for more info on [Cognito User Pool Identity Providers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-identity-provider.html).
+
+#### JSON Web Token (JWT)
+* A formatted JSON nested object structure, used by both OAuth and OpenID Connect (more on these terms below) for passing data between web components, ensuring data integrity of the contained payload.
+* JWT does not encrypt the data (and will generally depend on TLS for data confidentiality).
+* JWTs are Signed by the issuer's private key and verified using the issuer's corresponding public key, for the data integrity component.
+* Refer to the official [JWT website](https://jwt.io) for more details.
+
+#### ID Tokens
+* According to [OpenID Connect (OIDC)](https://auth0.com/docs/secure/tokens/id-tokens/id-token-structure), in JWT format, provides proof of the user's successfull authentication.
+* Payloads contain claims about the user properties for the target/receiving application.
+  * Claims may be the following keys: `aud`, `name`, `email`, `expiration`, and [others](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims)
+  * For Amazon Cognito, claims will also contains:
+    * `cogntio:groups`, an array of the names of user pool groups that have your user as a member. Groups can generate a request for a preferred IAM role from and Identity pool.
+    * `cognito:preferred_role`, the ARN of IAM role assoicated with the user's highest priority user pool group.
+    * `cognito:username`, the user name of the user within the user pool group
+    * `cognito:roles`, an array of the names of the IAM roles associated with the user's groups. Each user pool group can have an IAM role associated with it.
+  * Also refer to AWS' devloper guide around [ID Tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html) for more info.
+* Claims are used by the application to help with the user experience, in lieu of using cookies.
+
+##### Example ID Token Payload
+```
+<header>.{
+    "sub": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "cognito:groups": [
+        "test-group-a",
+        "test-group-b",
+        "test-group-c"
+    ],
+    "email_verified": true,
+    "cognito:preferred_role": "arn:aws:iam::111122223333:role/my-test-role",
+    "iss": "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_example",
+    "cognito:username": "my-test-user",
+    "middle_name": "Jane",
+    "nonce": "abcdefg",
+    "origin_jti": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "cognito:roles": [
+        "arn:aws:iam::111122223333:role/my-test-role"
+    ],
+    "aud": "xxxxxxxxxxxxexample",
+    "identities": [
+        {
+            "userId": "amzn1.account.EXAMPLE",
+            "providerName": "LoginWithAmazon",
+            "providerType": "LoginWithAmazon",
+            "issuer": null,
+            "primary": "true",
+            "dateCreated": "1642699117273"
+        }
+    ],
+    "event_id": "64f513be-32db-42b0-b78e-b02127b4f463",
+    "token_use": "id",
+    "auth_time": 1676312777,
+    "exp": 1676316377,
+    "iat": 1676312777,
+    "jti": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "email": "my-test-user@example.com"
+}
+.<token signature>
+```
+
+#### Access Tokens
+* Contains claims about the authenticated user, a list of the user's groups, and a list of scopes, via the [OAuth 2.0 Scope](https://www.rfc-editor.org/rfc/rfc6749#section-3.3) specification, in JWT format.
+* Access token provider authorization, permissioning a client application to access specific resources and allow specific actions on behalf of the user, as granted by the access token. 
+  * For example, authorizing LinkedIn to access X's (Twitter's) APIs for cross posting.
+  * Refer to AWS's developer guide for more info regarding [Access Tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html)
+* Access Tokens will contain the `scope` key, a list of OAuth 2.0 scopes that define what access the token provides. For Amazon Cognito API sign-in, only `aws.cognito.signin.user.admin` is contained within the scope.
+* Amazon Cognito Access Tokens will also contain `cognito:groups`, an array of the names of user pool groups that have you as a member, similar to the OIDC Access Token mentioned above.
+
+##### Example Access Token
+```
+<header>.
+{
+   "sub":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "device_key": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "cognito:groups":[
+      "testgroup"
+   ],
+   "iss":"https://cognito-idp.us-west-2.amazonaws.com/us-west-2_example",
+   "version":2,
+   "client_id":"xxxxxxxxxxxxexample",
+   "origin_jti":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "event_id":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "token_use":"access",
+   "scope":"phone openid profile resourceserver.1/appclient2 email",
+   "auth_time":1676313851,
+   "exp":1676317451,
+   "iat":1676313851,
+   "jti":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "username":"my-test-user"
+}
+.<token signature>
+```
+
+#### Sample CDK Code
+Imagine if we were creating resources using CDK, and wanted to then create an Authentication Stack in order to provide authentication and authorization mechanisms for accessing these resources in AWS. Perhaps we would like to employ a token header for API access, and based on the token, claims about the user will be used in order to determine appropriate permissions. Suppose we would only grant `PUT` access to Admin users, but `GET` is always available to all users. Suppose also 
+
+##### Breaking Down The CDK Constructs
+Refer to the [GitHub Gist](https://gist.github.com/Adam-Lechnos/52b57ccebb82360c606b82d694f74d05), containing the complete CDK for the hypothetical Authentication Stack, written in TypeScript. Here is the breakdown:
+
+##### Create User Pool
+```
+private createUserPool(){
+    this.userPool = new UserPool(this, 'UserPool', {
+        selfSignUpEnabled: true,
+        signInAliases: {
+            username: true,
+            email: true
+        }
+    });
+
+    new CfnOutput(this, 'UserPoolId', {
+        value: this.userPool.userPoolId
+    })
+}
+```
+* Creates a new User Pool named UserPool, with user sign-up enabled with only username and email address.
+* `CfnOutput` provides output to console during CDK Deploy, whereby the UserPoolID is displayed.
+
+##### Create User Pool Client
+```
+private createUserPoolClient(){
+    this.userPoolClient = this.userPool.addClient('UserPoolClient', {
+        authFlows: {
+            adminUserPassword: true,
+            custom: true,
+            userPassword: true,
+            userSrp: true
+        }
+    })
+
+    new CfnOutput(this, 'UserPoolClientId', {
+        value: this.userPoolClient.userPoolClientId
+    })
+}
+```
+* Creates a new User Pool Client, which are specified under the App Intergration tab of the User Pool, providing the app client name, authentication flow, session duration, and hosted UI settings.
+* Here we name the client UserPoolClient and attach it to the User Pool.
+* `CfnOutput` will output to console, the User Pool Client ID, during CDK Deploy.
+
+##### Create User Pool Groups
+```
+private createUserGroup(){
+    const cfnUserPoolGroup = new cognito.CfnUserPoolGroup(this, 'UserPoolGroup', {
+        userPoolId: this.userPool.userPoolId
+    })
+}
+
+private createAdminGroup(){
+    new CfnUserPoolGroup(this, 'Admins', {
+        userPoolId: this.userPool.userPoolId,
+        groupName: 'admins',
+        roleArn: this.adminRole.roleArn
+    })
+}
+```
+* Creates two user pool groups, attached to the User Pool, UserPoolGroup and Admins. The createAdminGroup function also contains added property values for `groupName`, which will provide a cleaner group name, 'admins', and roleArn, which maps the group to the 'adminRole', created below.
+
+##### Create Identity Pool
+```
+private createIdentityPool(){
+    this.identityPool = new CfnIdentityPool(this, 'IdentityPool', {
+        allowUnauthenticatedIdentities: true,
+        cognitoIdentityProviders: [{
+            clientId: this.userPoolClient.userPoolClientId,
+            providerName: this.userPool.userPoolProviderName
+        }]
+    })
+
+    new CfnOutput(this, 'IdentityPoolId', {
+        value: this.identityPool.ref
+    })
+
+    this.identityPool.identityPoolName
+}
+```
+* Created an Identity Pool named IdentityPool, allowing Unauthenticated Users, and specifying Cognito User Pool as the Identity Provider referencing the User Pool Client via `clientId` and User Pool Identity Provider as `providerName`.
+* Here, the User Pool Client options and User Pool Identity Provider come together for intergration with the Identity Pool.
+* `CfnOutput` print to console the Identity Pool ARN.
+
+##### Create IAM Roles
+```
+private createRoles(){
+    this.authenticatedRole = new Role(this, 'CognitoDefaultAuthenticatedRole', {
+        assumedBy: new FederatedPrincipal('cognito-identity.amazonaws.com', {
+            StringEquals: {
+                'cognito-identity.amazonaws.com:aud': this.identityPool.ref
+            },
+            'ForAnyValue:StringLike': {
+                'cognito-identity.amazonaws.com:amr': 'authenticated'
+            }
+        },
+        'sts:AssumeRoleWithWebIdentity'       
+        )
+    })
+
+    this.unauthenticatedRole = new Role(this, 'CognitoDefaultUnauthenticatedRole', {
+        assumedBy: new FederatedPrincipal('cognito-identity.amazonaws.com', {
+            StringEquals: {
+                'cognito-identity.amazonaws.com:aud': this.identityPool.ref
+            },
+            'ForAnyValue:StringLike': {
+                'cognito-identity.amazonaws.com:amr': 'unauthenticated'
+            }
+        },
+        'sts:AssumeRoleWithWebIdentity'       
+        )
+    })
+
+    this.adminRole = new Role(this, 'CognitoAdminRole', {
+        assumedBy: new FederatedPrincipal('cognito-identity.amazonaws.com', {
+            StringEquals: {
+                'cognito-identity.amazonaws.com:aud': this.identityPool.ref
+            },
+            'ForAnyValue:StringLike': {
+                'cognito-identity.amazonaws.com:amr': 'authenticated'
+            }
+        },
+        'sts:AssumeRoleWithWebIdentity'       
+        )
+    })
+
+    this.adminRole.addToPolicy(new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ["s3:ListAllMyBuckets"],
+        resources: ['*']
+    }))
+
+    new CfnOutput(this, 'AdminRoleArn', {
+        value: this.adminRole.roleArn
+    })
+}
+```
+* Creates three IAM Roles, CognitoDefaultAuthenticatedRole, CognitoDefaultUnauthenticatedRole, and CognitoAdminRole, with the last containing a `PolicyStatement` via the `addToPolicy` method, to allow the listing of all S3 Buckets within the AWS Account.
+* All three roles make user of the `assumedBy` property, by creating a new `FederatedPrincipal` object, each role contains a JSON object of 'Trusted entities', allowing each role to be assumed by the Identity Pool created above.
+  * CognitoDefaultAuthenticatedRole performs a `StringEquals` for Cognito Authenticated Users, allowing only users Authenticated by Cognito to assume this role, with the following line under `ForAnyValue:StringLike`: `'cognito-identity.amazonaws.com:amr': 'authenticated'`.
+    * Authenticated User will inherit the polciy associated with this role. Currently, no policy statement has been set.
+  * CognitoDefaultUnauthenticatedRole is the same as the role above, however, `ForAnyValue:StringLike`: `'cognito-identity.amazonaws.com:amr': 'unauthenticated'` for assumption of the role by unauthenticated users.
+  * CognitoAdminRole contains the same JSON as CognitoDefaultAuthenticatedRole, for use by Admin users. This role will only work for Authenticated Users, but contain the permissions as listed within the `addToPolicy` method.
+    * In addition to the AWS permissions provided by the policy statement, API Gateway will receive the Access Token supplid by the Authorization header. Downstream, a Lambda function may parse the event claims' `'cognito:groups:'` key, and based on it value, allow the coded permissions.
+      * For example, a `hasAdminGroup` function may be created, whereby the event body is supplied, and if any values in the list match 'admin', will allow certain API methods. Perhaps only the Delete method would contain the following code:
+      * ```
+        if (!hasAdminGroup(event)){
+          return {
+              statusCode: 401,
+              body: JSON.stringify('Not authorized!')
+          }
+        }
+        ```
+
+###### Identity Pool Role Attachments & Mappings
+```
+private attachRoles(){
+    new CfnIdentityPoolRoleAttachment(this, 'RolesAttachment', {
+        identityPoolId: this.identityPool.ref,
+        roles: {
+            'authenticated': this.authenticatedRole.roleArn,
+            'unauthenticated': this.unauthenticatedRole.roleArn
+        },
+        roleMappings: {
+            adminsMapping: {
+                type: 'Token',
+                ambiguousRoleResolution: 'AuthenticatedRole',
+                identityProvider: `${this.userPool.userPoolProviderName}:${this.userPoolClient.userPoolClientId}`
+            }
+        }
+    })
+    }
+```
+* The IAM Roles will be attached to the Identity Pool, whereby the Identity Pool is specified using `this.identityPool.ref`, and the default authenticated and unauthenticated roles via `'authenticated': this.authenticatedRole.roleArn` and `'unauthenticated': this.unauthenticatedRole.roleArn` lines.
+* Role mapping are specified within the nested JSON `roleMappings:` object. In the above example, the name is specified as `adminsMapping`, which is of type `Token`, with `ambiguousRoleResolution` set to `AuthenticatedRole`. The `identityProvider` contains the User Pool Provider name from the userPool object, concatenated with a `:` and the User Pool Client ID.
+  * Setting Type to 'Token' will use the `cognito:roles` and `cognito:preferred_role` from the ID Token claims supplied by the Cognito Identity Provider. The IAM roles are mapped via the user group memberships within the Cognito Identity Provider, as listed within the `'cognito:groups:'` claim.
+  * Setting Type to 'Rules' will attempt to match claims from the ID Token to map a role. In this case the `roleMappings` JSON would be as follows:
+      ```
+      roleMappings: {
+          adminsMapping: {
+              type: 'Rules',
+              ambiguousRoleResolution: 'AuthenticatedRole',
+              identityProvider: `${this.userPool.userPoolProviderName}:${this.userPoolClient.userPoolClientId}`,
+              rulesConfiguration: {
+                rules: [{
+                  claim: 'claim',
+                  matchType: 'matchType',
+                  roleArn: 'roleArn',
+                  value: 'value',
+                }]
+              }
+          }
+      }
+      ```
+  * In addition, the IAM policy attached to the Authenticated role will also be applied but not listed within any of the claims, granted permissions as provided across all mapped roles and the authenticated roles.
+  * Unauthenticated users will only be permissioned against the desgignated Unauthenticated Role. APIs may still choose to allow access to certain to methods omitting a check against the Access Token.
+
+###### Disparate App Client API Method Access
+*Authorization Scopes* are used to determine the granted permissions for an app. Authorization Scopes are supplied to each API Method, by providing the Authorization value as the Cognito User Pool. A domain for the user pool must be configured, at which point, Amazon Cognito automatically provisions an OAuth 2.0 authorization server and hosted web UI with sign-up and sign-in pages that the web app can present to users. Authentication to the sign-in pages creates and ID Token and Access Token, which  then may be used to access the API resource.
+
+* A Resource Server is an OAuth 2.0 API server, such as the API Gateway and its methods pointing to a Lambda function handler. It validates that access tokens from the user pool contain the scopes that authorize the requested method and path in the API that protects it.
+* Access tokens are the OAuth 2.0 JWT tokens which contain claims, including custom claims, recall from the [Breaking Down The CDK Constructs](#breaking-down-the-cdk-constructs) section above. You also learned that 'aws.cognito.signin.user.admin' was added by default to the claims within the Access token. It authorizes the bearer of an access token to query and update all information about a user pool user with, for example, the GetUser and UpdateUserAttributes API operations.
+  * GetUser: Gets the user attributes and metadata for a user. More details within the API Reference for [Amazon Cognito User Pools](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_GetUser.html).
+  * UpdateUserAttributes: Allows users to update one or more of their attributes with their own credentials. More details within the API Reference for [Amazon Cognito User Pools](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UpdateUserAttributes.html).
+* Additional *Custom Scope* are required in order to parse them from the API Authorizer to grant each method's API access.
+  * For example, 'read' would be parsed by the `GET` resource to allow access to this API method.
+  * Custom scopes are added to the Cognito User Pool, App Intergration, Resource servers, within the AWS Management Console.
+  * The created custom scopes are then added within the Identity Pool associated with the User Pool.
+
+* [Read more about Cognito Custom Scopes for API Gateway](https://repost.aws/knowledge-center/cognito-custom-scopes-api-gateway)
+* [Read more details about OAuth 2.0 scopes and API Authorization with resource server](https://repost.aws/knowledge-center/cognito-custom-scopes-api-gateway)

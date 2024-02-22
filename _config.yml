@@ -81,4 +81,6 @@ compress_html:
 
 # Use for referencing external content from GitHub repo, dedicated to diagrams and charts, appended with correct repo folder
 github-content: https://github-content-cache.adamlechnos.com/Adam-Lechnos/diagrams-charts/blob/main
+
+# Used by _data/projects.json, when adding an 'image' value, only the repo name and ownwards of the raw url is required, for the same reason above
 github-project-image: https://github-content-cache.adamlechnos.com/Adam-Lechnos/
