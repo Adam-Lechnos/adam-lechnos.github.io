@@ -14,6 +14,9 @@ permalink: /repos/
 ##### [Devops: JSON](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Ajson&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Bash](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Abash&type=repositories){:target="_blank" rel="noopener"}
 
+#### [Web & App Dev](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app&type=repositories){:target="_blank" rel="noopener"}
+##### [Web & App Dev: Ruby](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app+topic%3Aruby&type=repositories){:target="_blank" rel="noopener"}
+
 #### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
 ##### [Finance: JavaScript](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Ajavascript&type=repositories){:target="_blank" rel="noopener"}
 
@@ -31,6 +34,9 @@ permalink: /repos/
 ##### [Devops: Jenkins](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Ajenkins&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: Linux](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Alinux&type=repositories){:target="_blank" rel="noopener"}
 ##### [Devops: AWS](https://github.com/search?q=user%3Aadam-lechnos+topic%3Adevops+topic%3Aaws&type=repositories){:target="_blank" rel="noopener"}
+
+#### [Web & App Dev](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app&type=repositories){:target="_blank" rel="noopener"}
+##### [Web & App Dev: Jekyll](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app+topic%3Ajekyll&type=repositories){:target="_blank" rel="noopener"}
 
 #### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
 ##### [Finance: Google Apps Script](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script&type=repositories){:target="_blank" rel="noopener"}

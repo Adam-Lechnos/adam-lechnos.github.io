@@ -1,7 +1,7 @@
 ---
-title: "AWS CDK - Understanding Amazon Cognito ID Tokens and Credentials Workflow"
+title: "AWS CDK - Understanding Amazon Cognito Authentication and Authorization"
 date: 2023-02-20 12:00:00 -0000
-categories: aws devops
+categories: aws devops cdk typescript
 ---
 
 ### Diagram
@@ -15,9 +15,9 @@ Components of Amazon Cognito which are part of the authentication and authorizat
 
 #### Cognito User Pools - Authentication
 * Contains a directory of users & groups or, may be delegated to a Federated Identity Provider for sign-in experience, such as Google, Facebook, Amazon, Apple, SAML, or OIDC (OpenID Connect).
-* Groups created within the User Pool are associatged with IAM ([AWS Identity and Access Management](https://aws.amazon.com/iam/)) roles, assumed by the user for performing tasks within AWS, such as reading S3 Buckets.
-  * Each group may have a seperate IAM Role configured, for allowing delineated permissions amongst disparate [managed group members](https://docs.aws.amazon.com/cognito/latest/developerguide/managing-users.html?icmpid=docs_cognito_console_help_panel).
-* App intergration settings, where app clients are defined and its token expiration, authentication flows, OAUTH 2.0 grant types, and OpenID Connnect Scopes and Identity Providers are defined.
+* Groups created within the User Pool are associated with IAM ([AWS Identity and Access Management](https://aws.amazon.com/iam/)) roles, assumed by the user for performing tasks within AWS, such as reading S3 Buckets.
+  * Each group may have a separate IAM Role configured, for allowing delineated permissions amongst disparate [managed group members](https://docs.aws.amazon.com/cognito/latest/developerguide/managing-users.html?icmpid=docs_cognito_console_help_panel).
+* App integration settings, where app clients are defined and its token expiration, authentication flows, OAUTH 2.0 grant types, and OpenID Connnect Scopes and Identity Providers are defined.
   * Authentication flow options: ALLOW_ADMIN_USER_PASSWORD_AUTH, ALLOW_USER_PASSWORD_AUTH, ALLOW_REFRESH_TOKEN_AUTH, ALLOW_USER_PASSWORD_AUTH, and ALLOW_USER_SRP_AUTH.
   * OAuth 2.0 grant type options: 
     * Authorization code grant, provides an authorization code as the response
@@ -25,13 +25,13 @@ Components of Amazon Cognito which are part of the authentication and authorizat
   * OpenID Connect Scopes, at least one scope is required to specify the attributes the app client can retrieve for access. Scopes include:
     * aws.cognito.sigin.user.admin, OpenID, Email, Phone, and Profile (the last three options also require OpenID to be selected)
   * Identity providers, which are made available to the client. Some or all of your user pool external Identity Providers may be selected to authenticate your users.
-    * Selecting atleast `Cognito user pool` enables authentication via the Cognito User Pool, which enables access to its Federated Identity Providers, or, its own internal set of users.
-  * Adding atleast a [Configured User Pool Domain](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-assign-domain.html?icmpid=docs_cognito_console_help_panel) within the App Integration tab provides a Hosted UI for the user sign-in experience.
+    * Selecting at least `Cognito user pool` enables authentication via the Cognito User Pool, which enables access to its Federated Identity Providers, or, its own internal set of users.
+  * Adding at least a [Configured User Pool Domain](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-assign-domain.html?icmpid=docs_cognito_console_help_panel) within the App Integration tab provides a Hosted UI for the user sign-in experience.
   * The client is where the Authentication flow session duration, refresh token expiration, access token expiration, ID token expiration, and other advanced authentication settings are specified.
 
 #### Cognito Identity Pools - Authorization
 * Grants users access to AWS resources, and are associated with Identity Pools as the Identity Provider. External Identity Providers may be selected here as well, bypassing the use of Amazon Cognito User Pools.
-* Default Authenticated and Unauthenticated (Guest Access) roles may be specified, wherby the ID pool is the trusted resource assuming the role on behalf of the user.
+* Default Authenticated and Unauthenticated (Guest Access) roles may be specified, whereby the ID pool is the trusted resource assuming the role on behalf of the user.
 * Custom roles may be added then mapped via the user pool and its assigned groups (Admin group members will be assigned the Admin IAM role for example).
   * This mapping would be used either in conjunction or in lieu of the IAM roles associated with groups created within the Cognito User Pools, depending on how the role mappings are configured.
       * Rule based role mappings will match claim values, whereas Token based role mappings will perform a lookup of the IAM Role associated with `cognito:role` and `cognito:preferred_role` claims injected from the Cognito Identity Pool. 
@@ -41,7 +41,7 @@ Components of Amazon Cognito which are part of the authentication and authorizat
   * i.e., if authenticated, but no group is assigned within the user pool, use the default role assoicated with the Authenticated settings.
 
 #### AWS Amplify - Authentication Mechanism
-* Configure Congito as the authentication provider
+* Configure Cognito as the authentication provider
 * Present authentication frontend
 * Fetch ID Token upon authentication and pass it around where required
 * May use its own Federated Provider such as Google, Apple, etc.
@@ -60,15 +60,15 @@ In Cognito, both *ID Tokens* and *Access Tokens* include a `cognito:groups` clai
 * Refer to the official [JWT website](https://jwt.io) for more details.
 
 #### ID Tokens
-* According to [OpenID Connect (OIDC)](https://auth0.com/docs/secure/tokens/id-tokens/id-token-structure), in JWT format, provides proof of the user's successfull authentication.
+* According to [OpenID Connect (OIDC)](https://auth0.com/docs/secure/tokens/id-tokens/id-token-structure), in JWT format, provides proof of the user's successful authentication.
 * Payloads contain claims about the user properties for the target/receiving application.
   * Claims may be the following keys: `aud`, `name`, `email`, `expiration`, and [others](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims)
   * For Amazon Cognito, claims will also contains:
     * `cogntio:groups`, an array of the names of user pool groups that have your user as a member. Groups can generate a request for a preferred IAM role from and Identity pool.
-    * `cognito:preferred_role`, the ARN of IAM role assoicated with the user's highest priority user pool group.
+    * `cognito:preferred_role`, the ARN of IAM role associated with the user's highest priority user pool group.
     * `cognito:username`, the user name of the user within the user pool group
     * `cognito:roles`, an array of the names of the IAM roles associated with the user's groups. Each user pool group can have an IAM role associated with it.
-  * Also refer to AWS' devloper guide around [ID Tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html) for more info.
+  * Also refer to AWS' developer guide around [ID Tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html) for more info.
 * Claims are used by the application to help with the user experience, in lieu of using cookies.
 
 ##### Example ID Token Payload
@@ -114,7 +114,7 @@ In Cognito, both *ID Tokens* and *Access Tokens* include a `cognito:groups` clai
 
 #### Access Tokens
 * Contains claims about the authenticated user, a list of the user's groups, and a list of scopes, via the [OAuth 2.0 Scope](https://www.rfc-editor.org/rfc/rfc6749#section-3.3) specification, in JWT format.
-* Access token provider authorization, permissioning a client application to access specific resources and allow specific actions on behalf of the user, as granted by the access token. 
+* Access token provider authorization, granting a client application access specific resources and allow specific actions on behalf of the user, as granted by the access token. 
   * For example, authorizing LinkedIn to access X's (Twitter's) APIs for cross posting.
   * Refer to AWS's developer guide for more info regarding [Access Tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html)
 * Access Tokens will contain the `scope` key, a list of OAuth 2.0 scopes that define what access the token provides. For Amazon Cognito API sign-in, only `aws.cognito.signin.user.admin` is contained within the scope.
@@ -187,7 +187,7 @@ private createUserPoolClient(){
     })
 }
 ```
-* Creates a new User Pool Client, which are specified under the App Intergration tab of the User Pool, providing the app client name, authentication flow, session duration, and hosted UI settings.
+* Creates a new User Pool Client, which are specified under the App Integration tab of the User Pool, providing the app client name, authentication flow, session duration, and hosted UI settings.
 * Here we name the client UserPoolClient and attach it to the User Pool.
 * `CfnOutput` will output to console, the User Pool Client ID, during CDK Deploy.
 
@@ -228,7 +228,7 @@ private createIdentityPool(){
 }
 ```
 * Created an Identity Pool named IdentityPool, allowing Unauthenticated Users, and specifying Cognito User Pool as the Identity Provider referencing the User Pool Client via `clientId` and User Pool Identity Provider as `providerName`.
-* Here, the User Pool Client options and User Pool Identity Provider come together for intergration with the Identity Pool.
+* Here, the User Pool Client options and User Pool Identity Provider come together for integration with the Identity Pool.
 * `CfnOutput` print to console the Identity Pool ARN.
 
 ##### Create IAM Roles
@@ -287,7 +287,7 @@ private createRoles(){
 * Creates three IAM Roles, CognitoDefaultAuthenticatedRole, CognitoDefaultUnauthenticatedRole, and CognitoAdminRole, with the last containing a `PolicyStatement` via the `addToPolicy` method, to allow the listing of all S3 Buckets within the AWS Account.
 * All three roles make user of the `assumedBy` property, by creating a new `FederatedPrincipal` object, each role contains a JSON object of 'Trusted entities', allowing each role to be assumed by the Identity Pool created above.
   * CognitoDefaultAuthenticatedRole performs a `StringEquals` for Cognito Authenticated Users, allowing only users Authenticated by Cognito to assume this role, with the following line under `ForAnyValue:StringLike`: `'cognito-identity.amazonaws.com:amr': 'authenticated'`.
-    * Authenticated User will inherit the polciy associated with this role. Currently, no policy statement has been set.
+    * Authenticated User will inherit the policy associated with this role. Currently, no policy statement has been set.
   * CognitoDefaultUnauthenticatedRole is the same as the role above, however, `ForAnyValue:StringLike`: `'cognito-identity.amazonaws.com:amr': 'unauthenticated'` for assumption of the role by unauthenticated users.
   * CognitoAdminRole contains the same JSON as CognitoDefaultAuthenticatedRole, for use by Admin users. This role will only work for Authenticated Users, but contain the permissions as listed within the `addToPolicy` method.
     * In addition to the AWS permissions provided by the policy statement, API Gateway will receive the Access Token supplid by the Authorization header. Downstream, a Lambda function may parse the event claims' `'cognito:groups:'` key, and based on it value, allow the coded permissions.
@@ -342,7 +342,7 @@ private attachRoles(){
       }
       ```
   * In addition, the IAM policy attached to the Authenticated role will also be applied but not listed within any of the claims, granted permissions as provided across all mapped roles and the authenticated roles.
-  * Unauthenticated users will only be permissioned against the desgignated Unauthenticated Role. APIs may still choose to allow access to certain to methods omitting a check against the Access Token.
+  * Unauthenticated users will receive permissions against the Unauthenticated Role. APIs may still choose to allow access to certain to methods omitting a check against the Access Token.
 
 ###### Disparate App Client API Method Access
 *Authorization Scopes* are used to determine the granted permissions for an app. Authorization Scopes are supplied to each API Method, by providing the Authorization value as the Cognito User Pool. A domain for the user pool must be configured, at which point, Amazon Cognito automatically provisions an OAuth 2.0 authorization server and hosted web UI with sign-up and sign-in pages that the web app can present to users. Authentication to the sign-in pages creates and ID Token and Access Token, which  then may be used to access the API resource.
@@ -353,8 +353,79 @@ private attachRoles(){
   * UpdateUserAttributes: Allows users to update one or more of their attributes with their own credentials. More details within the API Reference for [Amazon Cognito User Pools](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UpdateUserAttributes.html).
 * Additional *Custom Scope* are required in order to parse them from the API Authorizer to grant each method's API access.
   * For example, 'read' would be parsed by the `GET` resource to allow access to this API method.
-  * Custom scopes are added to the Cognito User Pool, App Intergration, Resource servers, within the AWS Management Console.
+  * Custom scopes are added to the Cognito User Pool, App Integration, Resource servers, within the AWS Management Console.
   * The created custom scopes are then added within the Identity Pool associated with the User Pool.
 
 * [Read more about Cognito Custom Scopes for API Gateway](https://repost.aws/knowledge-center/cognito-custom-scopes-api-gateway)
 * [Read more details about OAuth 2.0 scopes and API Authorization with resource server](https://repost.aws/knowledge-center/cognito-custom-scopes-api-gateway)
+
+###### Adding a Resource Server
+```
+private createResourceServers(){
+    const readOnlyScope = new cognito.ResourceServerScope({ scopeName: 'read', scopeDescription: 'Read-only access' });
+    const fullAccessScope = new cognito.ResourceServerScope({ scopeName: '*', scopeDescription: 'Full access' });
+
+    const userServer = this.userPool.addResourceServer('ResourceServer', {
+        identifier: 'users',
+        scopes: [ readOnlyScope, fullAccessScope ],
+      });
+      
+      const readOnlyClient = this.userPool.addClient('read-only-client', {
+        // ...
+        oAuth: {
+          // ...
+          scopes: [ cognito.OAuthScope.resourceServer(userServer, readOnlyScope) ],
+        },
+      });
+      
+      const fullAccessClient = this.userPool.addClient('full-access-client', {
+        // ...
+        oAuth: {
+          // ...
+          scopes: [ cognito.OAuthScope.resourceServer(userServer, fullAccessScope) ],
+        },
+      });
+}
+```
+* Created two different resource servers named 'read-only-client' and 'full-access-client'. The resource servers create two different access scopes, `scopeName: 'read', scopeDescription: 'Read-only access'` and `scopeName: '*', scopeDescription: 'Full access'`, added to their respective resource servers. Each resource servers is accessed by its client ID, generated upon creation. The resource servers are then accessed by the hosted UI and client ID. In response will be either an ID and Access Token or Authorization Code, depending on the Authorization Flow. Authorization Codes are then redeemed for ID & Access Tokens, using the ['Token'](https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html) endpoint.
+
+The following is an example CURL request/response to/from the token endpoint
+
+Request
+```
+curl --location --request POST 'https://example-est.auth.us-east-1.amazoncognito.com/oauth2/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=5j9701eo7qmhf91oth5eks6kii' \
+--data-urlencode 'code=79927d32-ba18-4cff-8254-b7d43d1347a2' \
+--data-urlencode 'grant_type=authorization_code' \
+--data-urlencode 'redirect_uri=https://example.com'
+```
+
+Response
+```
+{"id_token":"eyJraWQiOiI3SFRmUHF3OTdVRHQwdTQ0cFoyVVZQMFVCVUV5d0toWlNmYVNsc0pTdWl3PSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibzBNVDBnWVEwbVdua3EwdnA2dHk4ZyIsInN1YiI6ImQ0ODhlNDM4LWIwZDEtNzAxMS1iYzJjLTYwNGExOTlmY2RkNSIsImNvZ25pdG86Z3JvdXBzIjpbImFkbWlucyJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOGo2UjZqS0NZIiwiY29nbml0bzp1c2VybmFtZSI6ImFsZWNobm9zIiwib3JpZ2luX2p0aSI6IjYyMGEwMTY2LTRhNGItNDA0Ny1iNGQzLWFmN2U5MWE1NTQ0NyIsImNvZ25pdG86cm9sZXMiOlsiYXJuOmF3czppYW06OjgyMDEyNzUwOTgxMjpyb2xlXC9BdXRoU3RhY2stQ29nbml0b0FkbWluUm9sZTRDMTBGQkE0LUVpRFRIb0VmMWFuUiJdLCJhdWQiOiI1ajk3MDFlbzdxbWhmOTFvdGg1ZWtzNmtpaSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzA4NjMxOTg0LCJleHAiOjE3MDg2MzU1ODQsImlhdCI6MTcwODYzMTk4NSwianRpIjoiYzJmMzMwZWQtYmE0Zi00YzNmLWJhY2ItMDQyNDA3ZGE2NTZmIiwiZW1haWwiOiJhZGFtLmxlY2hub3NAZ21haWwuY29tIn0.veWBGSGEUL8Gz9zHLHa0oWm6L_w3Y76-GtXG_oYnDrmgVAHU7e2RYCE7YEYRN2Mh1sZVLEXZdbQIgO-BNjQqbfLQwIeyDz4o0hAakUMYwuBvk1f9WfntTuszCS8jCZvK2ERZ8r9utcpKndjqVWt2RzGmYaSgJXa5xdCZXfSS77y3KhRvLKY-4AI-pnuthheRHFUzxZHkDhM0YXjL3lKSpjI3697bDBa5K-qRMTVNO37uVAno_AUJ1bb0C7iqwWAC0DN9D6QyGetY0coh4ex9IxmoHiti7D9pZKAyriufa5P6VAk-QNJpPWJ1b0rkT4dIZ_4vG2Ydh63hvUPN99NO_g","access_token":"eyJraWQiOiIyRDRPSlk2ZTY4OGt0aU94eXBSNWRvWEtEc3lHYmFCR01WWmJmYm1oN0dvPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNDg4ZTQzOC1iMGQxLTcwMTEtYmMyYy02MDRhMTk5ZmNkZDUiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbnMiXSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOGo2UjZqS0NZIiwidmVyc2lvbiI6MiwiY2xpZW50X2lkIjoiNWo5NzAxZW83cW1oZjkxb3RoNWVrczZraWkiLCJvcmlnaW5fanRpIjoiNjIwYTAxNjYtNGE0Yi00MDQ3LWI0ZDMtYWY3ZTkxYTU1NDQ3IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiBvcGVuaWQgdXNlcnNcL3JlYWQiLCJhdXRoX3RpbWUiOjE3MDg2MzE5ODQsImV4cCI6MTcwODYzNTU4NCwiaWF0IjoxNzA4NjMxOTg1LCJqdGkiOiI1YjI1YTRhYS0zZGZjLTRiZWUtOGIyMS0zMjA4NTRlY2QyOGUiLCJ1c2VybmFtZSI6ImFsZWNobm9zIn0.EWCEwDk46i8fOU4IVnlwgM7XNz_i-jtYcpyOYE8q4YGFC7giK5lWgzgIcD9_zHzUF6bVc6iv1uqtQDEXZlOU7pofMhUWBykqnDUC0Q57X4bP3giDigIYmfj77zJLxlWhwRvim28hZfJg9Sz_RIBcf13lo4D8bZvTE5HVEEI-tztuA4B-1dDY65po2zMHqwBEWF9FYaQC2edm5lyQEtTFleHVawBVbQWIU3Ud16TznAy9WEp2q_QgsNSFKuF-2LnQuO27MfyFWFGza8gDMrBwxVJ1l9bjrJuLH300QqQWLdaX7FTupOZHtvUxeND3K4Hc0-ZTu-nvpGUYOAxemfyyIQ","refresh_token":"eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.RMAy1jPNXxpGdPIr1TUukG685KbV5JgokWkBtnWDFOOlcFSRGWS-uNkglPdJJv4g1r4nk7jxYY8J8HnYmomzlt7OD0FdSnvrCEr61SbDZz5FZ9jhzdl-p2_fEoi_fUydpwG_JUliFucvutwDcBd1W2Ul900b24m1nHSrq_NL8r9uFJcVrkFDWLKQ9fxipSYZyU37LePN-qrxX78pQS2vIIe8tVvrG6CuK4GjdRDUvz10tpDFHdTFH75Bn0GHr5xoXXCuTg7CkuyipVYapYeI_AwJIEYBfLzlUjl99hrfkxDUVqlpyqgj9Jq_NOsXwt-sd73ZbPoBGAurAIw2Yw6mxg.WUaX_U7nlacSnml-.CctUJfNf4hngQr4QktmuTWTT5myYN03GzwVWgktiQpGHccW5jgK9QSQmKIG5v33qHoG5KOpm7xyKU9YsehJjpZHj8yq_NMMEamk7DCv4UR7ooXBJS2Hf6KL7Y-2sFxD6Eec7P37t1HtP5QOB1P5CNZgxW069hQpKj6uyOmOqvrso88Jtk18HjRw0SZY1r2jzdey-PRsoinukv2_JWaH2A35QFuApVwurov3DWl7kNKXkQldOROkYC1xrOidXxVTfirschCxSTcNWf481Jh9BF-W_eYcnyAJU0RAFQjZdLEdEUBTl2uH3jTVfGl9qdq32oXmd_EoeugBCW2zUbgekJbRlfmMWt42bZ67qz6ZAZ-cgijp16g1f01pXKV-vKdXIvjOm6IZin9whMwoK4i6zFjfAZLlYPRP2N-lZCRW8d7YeOz7S00OISy5qHF6DpDhm6sWFe0VBmyaYjZKzZob99DXyXBVLJukn1_R2MD5nJNRzCUvJCni3RZ4vEOW8lUK2RwcGjPiLgMH9EalVcALsIq0zV_SsSHUzgXeuvFz6sP-ygIkogrfLKGnGg5ssMpsL6rAlmSskz39veMmWDRxzx20daQXr_vpRHVmk5_Lg6alX7l3uMNGUOpvLEJssRsDWf99kuyXYWA0aqNr80RiJS67TXX0DrmhKtipvnd_cb3G5xcvVsu5xc37g9UnA57Bzvi1ulB9XlcgfrpKZxgPUTV0OtWvVvUDIoi06aOCOMeQgcMBRKoS6T8Qrplg8OzCGmg5cNPgap8foPfD9qgY5DWDlMgtmtohmH_Sg8dFTAdE0fmWhFXmWw5ErVlg4Ea0FtOl5ix8DqOQx0hT_ClhGW-aiXUHoVy7uZHK2Fa385aBoxrk-DtxO5r0ROUjnVwGTVUdUPBFWAb905nTs1K5cvWgkwdRp-wq4NFhwcDy8T1h5Dss3kouIx53JiZv5E4gsroynF7fOL_4vxlt0dM-ykWBB1sN988cTvqUNunWM3vofNWnaEg-_YP7xbOFas78HKqqm4-2UNlM0bYY8E8D6TDf9KtPbZb0Pt2HuJYv6z9JiAmS24Og7Bce1DiEOlGafLrSMgkHp84TumRXWOLurJtVIW2MajM06k3xvAQYdP4rcb4zgss_Pegtq-6AWgNpJ7TvT14NLjm2GXahu2x6gr4EG8Tr3LRDJwOAkxxNwogv2RfBqI8YrjQzDZ_-jzwhhdOvvik3FswYoeLv-UGy333K4gYYEu9SuPsvV5ag.Uy9EJjNpUCosi7jYTiIdew","expires_in":3600,"token_type":"Bearer"}
+```
+
+JWT.io deencoded Access Token
+```
+{
+  "sub": "d488e438-b0d1-7011-bc2c-604a199fcdd5",
+  "cognito:groups": [
+    "admins"
+  ],
+  "iss": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_8j6R6jKCY",
+  "version": 2,
+  "client_id": "5j9701eo7qmhf91oth5eks6kii",
+  "origin_jti": "620a0166-4a4b-4047-b4d3-af7e91a55447",
+  "token_use": "access",
+  "scope": "aws.cognito.signin.user.admin openid users/read",
+  "auth_time": 1708631984,
+  "exp": 1708635584,
+  "iat": 1708631985,
+  "jti": "5b25a4aa-3dfc-4bee-8b21-320854ecd28e",
+  "username": "username"
+}
+```
+* The de-encoded Base64 Access Token indicates the scope values which were also attached to the resource server, `"scope": "aws.cognito.signin.user.admin openid users/read"`.
+
+The next post will go-over testing the CDK's Authorization Stack, by writing some test code in TypeScript.
