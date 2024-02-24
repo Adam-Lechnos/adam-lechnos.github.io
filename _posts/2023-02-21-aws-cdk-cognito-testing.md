@@ -10,7 +10,7 @@ categories: aws devops cdk typescript
 
 ![Amazon Cognito Client Workflow]({{ site.github-content }}/devops/Devops-IaC-AWS_CDK_Cognito.drawio.svg?raw=true)
 
-In my previous blog post, ["AWS CDK - Understanding Amazon Cognito Authentication and Authorization"](aws-cdk-cognito.html){:target="_blank" rel="noopener"}, I go-over creating an Auth Stack, whereby a web service may provide protected access to APIs and AWS resources, depending on client authentication and access scopes. This article will delve into testing the Auth Stack, using TypeScript calls to the built-in CDK modules and contructs.
+In my previous blog post, ["AWS CDK - Understanding Amazon Cognito Authentication and Authorization"](aws-cdk-cognito.html){:target="_blank" rel="noopener"}, I go-over creating an Auth Stack, whereby a web service may provide protected access to APIs and AWS resources, depending on client authentication and access scopes. This article will delve into testing the Auth Stack, using TypeScript calls to the built-in CDK modules and constructs.
 
 ### Creating an AuthService Test 
 
@@ -190,6 +190,17 @@ Executing the test via the CDK CLI should print to console the ID Token, Access 
   sessionToken: 'examplesessiontoken-examplesessiontoken'
 }
 ```
+* Notice the ID Token, which indicates the assumed roles for the session as
+  ```
+    'cognito:roles': [
+    'arn:aws:iam::820127509812:role/AuthStack-CognitoAdminRole4C10FBA4-EiDTHoEf1anR'
+  ],
+  ```
+* This is the default mapped Authenticated Role. If you were a member of multiple Cogito User Pool Group, each of the group IAM roles would be listed here in addition to the group names, also indicated within the ID Token as:
+```
+ 'cognito:groups': [ 'admins' ],
+```
+
 #### Testing The OAuth Token Endpoint for Custom Scopes
 When using resource servers for creating auth flows with different scopes, the API Gateway can use these scopes within the Access Token to determine the access granted to the authenticated user.
 
