@@ -10,7 +10,9 @@ twitter:
   username: adam_lechnos
   card: summary 
 
+# Enable if Projects page should contain categorized tags as URLs
 enableTags: true
+# Tag Array should not be populates as this will only add empty tags to the Project page
 tagarray: []
 
 #collections:
