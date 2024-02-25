@@ -10,7 +10,7 @@ categories: aws devops cdk typescript
 
 ![Amazon Cognito Client Workflow]({{ site.github-content }}/devops/Devops-IaC-AWS_CDK_Cognito-App.drawio.svg?raw=true)
 
-In my previous blog post, ["AWS CDK - Testing Amazon Cognito Authentication and Authorization"](aws-cdk-cognito-testing.html){:target="_blank" rel="noopener"}, I go-over testing the Auth Service stack, ensuring we receive back proper JWT tokens. I will now illustrate how to make use of the Auth Service stack within a hypothetical React application.
+In my previous blog post, ["AWS CDK - Testing Amazon Cognito Authentication and Authorization"](/aws/devops/cdk/typescript/2023/02/21/aws-cdk-cognito-testing.html){:target="_blank" rel="noopener"}, I go-over testing the Auth Service stack, ensuring we receive back proper JWT tokens. I will now illustrate how to make use of the Auth Service stack within a hypothetical React application.
 
 ### Components
 
@@ -28,7 +28,7 @@ The components are stored and bundled into an S3 Bucket and served as static con
 #### Authentication Service
 [GitHub Gist](https://gist.github.com/Adam-Lechnos/fc1a9ead7491b8435be9fe1777c36b98)
 
-The authentication service code has been discussed at length, from the previous two blog posts, we perform a deep dive into creating a testing the auth service stack. The code here is identical to what we previously covered.
+The authentication service code has been discussed at length, from the previous two blog posts, we perform a deep dive into creating a testing the auth service stack. The code here is identical to what we [previously](/aws/devops/cdk/typescript/2023/02/21/aws-cdk-cognito-testing.html) covered.
 
 Some additional changes made to the AuthService file are as follows:
 
