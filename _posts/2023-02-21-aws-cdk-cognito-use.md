@@ -28,7 +28,7 @@ The components are stored and bundled into an S3 Bucket and served as static con
 #### Authentication Service
 [GitHub Gist](https://gist.github.com/Adam-Lechnos/fc1a9ead7491b8435be9fe1777c36b98)
 
-The authentication service code has been discussed at length, from the previous two blog posts, we perform a deep dive into creating a testing the auth service stack. The code here is identical to what we previously covered went over.
+The authentication service code has been discussed at length, from the previous two blog posts, we perform a deep dive into creating a testing the auth service stack. The code here is identical to what we previously covered.
 
 Some additional changes made to the AuthService file are as follows:
 
