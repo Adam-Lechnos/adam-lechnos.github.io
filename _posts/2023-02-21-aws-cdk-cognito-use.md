@@ -26,13 +26,15 @@ The components are stored and bundled into an S3 Bucket and served as static con
 ### Breaking It Down
 
 #### Authentication Service
-[GitHub Gist](https://gist.github.com/Adam-Lechnos/fc1a9ead7491b8435be9fe1777c36b98)
+<!-- [GitHub Gist](https://gist.github.com/Adam-Lechnos/fc1a9ead7491b8435be9fe1777c36b98) -->
+
+{% gist fc1a9ead7491b8435be9fe1777c36b98 %}
 
 The authentication service code has been discussed at length, from the previous two blog posts, we perform a deep dive into creating a testing the auth service stack. The code here is identical to what we [previously](/aws/devops/cdk/typescript/2023/02/21/aws-cdk-cognito-testing.html) covered.
 
 Some additional changes made to the AuthService file are as follows:
 
-```
+``` typescript
 private async generateTemporaryCredentials() {
     const cognitoIdentityPool = `cognito-idp.${awsRegion}.amazonaws.com/${AuthStack.SpaceUserPoolId}`;
     const cognitoIdentity = new CognitoIdentityClient({
@@ -50,16 +52,18 @@ private async generateTemporaryCredentials() {
     return credentials;
 }
 ```
+
 * The function above will use Cognito for access to the temporary AWS Credentials by supplying the JWT Auth Token. When the Web Application wants to perform a task on behalf of the user, such as uploading a photo to an S3 bucket, these credentials may be used.
   * The Assumed IAM Role for the Credentials will be the Authenticated default for Cognito. Any additional Cognito groups with designated IAM roles will also provide those permissions as well.
     * This is useful for delineating group permissions according to membership type, such as premium vs non-premium members.
 
 #### Login Component
-[GitHub Gist](https://gist.github.com/Adam-Lechnos/d8f8dc6d244b49fe3c6969ced5151743)
+<!-- [GitHub Gist](https://gist.github.com/Adam-Lechnos/d8f8dc6d244b49fe3c6969ced5151743) -->
+{% gist d8f8dc6d244b49fe3c6969ced5151743 %}
 
 Here we break down the code used for performing the login and ensuring the user authenticated. We make extensive use of [State Hooks](https://react.dev/reference/react/hooks#state-hooks), which provide a clean way to initialize and update states across our web app.
 
-```
+``` typescript
 type LoginProps = {
   authService: AuthService;
   setUserNameCb: (userName: string) => void;
@@ -71,12 +75,13 @@ export default function LoginComponent({ authService, setUserNameCb }: LoginProp
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
 ```
+
 * A function labeled,`LoginComponent` is created with one argument of type `LoginProps`. We defined the 'type' above, via the `type LoginProps` line.
   * Hence, this one argument will require a type which contains two components, 'authService' of type 'AuthService', and 'setUserNameCb' which is a callback function that takes a string without a return.
 * We then initialize four State Hooks, each empty (and boolean as false) accessible via `userName`, `password`, `errorMessage`, and `loginSuccess`.
   * We can now set and use these variables by calling their 'setIndex' for setting the state, and referencing each variable where they each apply.
 
-```
+``` typescript
 const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
     if (userName && password) {
@@ -96,14 +101,15 @@ const handleSubmit = async (event: SyntheticEvent) => {
     }
   };
 ```
+
 * The `handleSubmit` will take in one 'event' argument, a SyntheticEvent type which will be explained further below. This will grab the end-user action and perform the following:
   * If the user provided a username and password within the login form, the `loginResponse` variable will perform a call to the `authService.login` method, which was supplied by the 'LoginProps' type argument.
   * The method is supplied with the username and password, now being handed off to the Authentication Service component, will use Cognito to authenticate the user, then store the JWT tokens and make available the AWS Credentials.
   * The 'username2' variable will contain the username if the `authService.getUserName()` succeeds. If set, set as the argument to the `setUserNameCb` callback supplied to the 'LoginProps' type argument.
   * If `LoginResponse` was populated from the Auth Service login function, the State Hook  for `loginSuccess` variable gets called, `setLoginSuccess`, setting it to 'true'.
 
-```
-  return (
+``` typescript
+return (
     <div role="main">
       {loginSuccess && <Navigate to="/profile" replace={true} />}
       <h2>Please login</h2>
@@ -113,31 +119,34 @@ const handleSubmit = async (event: SyntheticEvent) => {
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
         />
-        <br />
+        <br/>
         <label>Password</label>
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
         />
-        <br />
+        <br/>
         <input type="submit" value="Login" />
       </form>
-      <br />
+      <br/>
       {renderLoginResult()}
     </div>
   );
 ```
+
 * The Login Component returns the React frontend component for logging in, the form for supplying the username and password, and a Submit button to set the variables for username and password via the Set Hooks, `setUsername` and `setPassword`.
   * Notice the event being supplied to the 'handleSubmit' function 'event' parameter as `e`, which carries over each of their respective `value` vars supplied by the form to an anonymous function, which is supplied as `e.target.value` to each of the State Hooks' 'setIndexes', such as `setUserName(e.target.value)`.
   * CLicking 'Submit' triggers the 'setIndex' calls to the `handleSubmit` function.
 
 #### Application Router
-[GitHub Gist](https://gist.github.com/Adam-Lechnos/5e2049715eb7ffac7162af4303017e65)
+<!-- [GitHub Gist](https://gist.github.com/Adam-Lechnos/5e2049715eb7ffac7162af4303017e65) -->
+{% gist 5e2049715eb7ffac7162af4303017e65 %}
+
 
 Finally, the Application Router presents the code required for rendering a component based on the URL path.
 
-```
+``` typescript
 const authService = new AuthService();
 const dataService = new DataService(authService);
 
@@ -177,6 +186,7 @@ function App() {
     },
   ]);
 ```
+
 * Here, we have a router which will perform a component depending on where the user is redirected. Their would be a navbar at the entry point, which then routes to each of the provided `path` values. Based on the 'path', the `element` is dynamically rendered.
 * For `path: "/login"`, the LoginComponent service is called as follows: `LoginComponent authService={authService} setUserNameCb={setUserName}`
   * Notice the argument adheres to the `LoginProps` type declared in the LoginComponents above, with the `authService` being the imported `AuthService()` function assigned to the variable at the top of the code, along with,

@@ -149,10 +149,11 @@ In Cognito, both *ID Tokens* and *Access Tokens* include a `cognito:groups` clai
 Imagine if we were creating resources using CDK, and wanted to then create an Authentication Stack in order to provide authentication and authorization mechanisms for accessing these resources in AWS. Perhaps we would like to employ a token header for API access, and based on the token, claims about the user will be used in order to determine appropriate permissions. Suppose we would only grant `PUT` access to Admin users, but `GET` is always available to all users. Suppose also 
 
 ##### Breaking Down The CDK Constructs
-Refer to the [GitHub Gist](https://gist.github.com/Adam-Lechnos/52b57ccebb82360c606b82d694f74d05), containing the complete CDK for the hypothetical Authentication Stack, written in TypeScript. Here is the breakdown:
+<!-- Refer to the [GitHub Gist](https://gist.github.com/Adam-Lechnos/52b57ccebb82360c606b82d694f74d05), containing the complete CDK for the hypothetical Authentication Stack, written in TypeScript. Here is the breakdown: -->
+{% gist 52b57ccebb82360c606b82d694f74d05 %}
 
 ##### Create User Pool
-```
+``` typescript
 private createUserPool(){
     this.userPool = new UserPool(this, 'UserPool', {
         selfSignUpEnabled: true,
@@ -171,7 +172,7 @@ private createUserPool(){
 * `CfnOutput` provides output to console during CDK Deploy, whereby the UserPoolID is displayed.
 
 ##### Create User Pool Client
-```
+``` typescript
 private createUserPoolClient(){
     this.userPoolClient = this.userPool.addClient('UserPoolClient', {
         authFlows: {
@@ -192,7 +193,7 @@ private createUserPoolClient(){
 * `CfnOutput` will output to console, the User Pool Client ID, during CDK Deploy.
 
 ##### Create User Pool Groups
-```
+``` typescript
 private createUserGroup(){
     const cfnUserPoolGroup = new cognito.CfnUserPoolGroup(this, 'UserPoolGroup', {
         userPoolId: this.userPool.userPoolId
@@ -210,7 +211,7 @@ private createAdminGroup(){
 * Creates two user pool groups, attached to the User Pool, UserPoolGroup and Admins. The createAdminGroup function also contains added property values for `groupName`, which will provide a cleaner group name, 'admins', and roleArn, which maps the group to the 'adminRole', created below.
 
 ##### Create Identity Pool
-```
+``` typescript
 private createIdentityPool(){
     this.identityPool = new CfnIdentityPool(this, 'IdentityPool', {
         allowUnauthenticatedIdentities: true,
@@ -232,7 +233,7 @@ private createIdentityPool(){
 * `CfnOutput` print to console the Identity Pool ARN.
 
 ##### Create IAM Roles
-```
+``` typescript
 private createRoles(){
     this.authenticatedRole = new Role(this, 'CognitoDefaultAuthenticatedRole', {
         assumedBy: new FederatedPrincipal('cognito-identity.amazonaws.com', {
@@ -292,7 +293,7 @@ private createRoles(){
   * CognitoAdminRole contains the same JSON as CognitoDefaultAuthenticatedRole, for use by Admin users. This role will only work for Authenticated Users, but contain the permissions as listed within the `addToPolicy` method.
     * In addition to the AWS permissions provided by the policy statement, API Gateway will receive the Access Token supplid by the Authorization header. Downstream, a Lambda function may parse the event claims' `'cognito:groups:'` key, and based on it value, allow the coded permissions.
       * For example, a `hasAdminGroup` function may be created, whereby the event body is supplied, and if any values in the list match 'admin', will allow certain API methods. Perhaps only the Delete method would contain the following code:
-      * ```
+      * ``` typescript
         if (!hasAdminGroup(event)){
           return {
               statusCode: 401,
@@ -302,7 +303,7 @@ private createRoles(){
         ```
 
 ###### Identity Pool Role Attachments & Mappings
-```
+``` typescript
 private attachRoles(){
     new CfnIdentityPoolRoleAttachment(this, 'RolesAttachment', {
         identityPoolId: this.identityPool.ref,
@@ -360,7 +361,7 @@ private attachRoles(){
 * [Read more details about OAuth 2.0 scopes and API Authorization with resource server](https://repost.aws/knowledge-center/cognito-custom-scopes-api-gateway)
 
 ###### Adding a Resource Server
-```
+``` typescript
 private createResourceServers(){
     const readOnlyScope = new cognito.ResourceServerScope({ scopeName: 'read', scopeDescription: 'Read-only access' });
     const fullAccessScope = new cognito.ResourceServerScope({ scopeName: '*', scopeDescription: 'Full access' });
@@ -402,12 +403,12 @@ curl --location --request POST 'https://example-est.auth.us-east-1.amazoncognito
 ```
 
 Response
-```
+``` json
 {"id_token":"eyJraWQiOiI3SFRmUHF3OTdVRHQwdTQ0cFoyVVZQMFVCVUV5d0toWlNmYVNsc0pTdWl3PSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibzBNVDBnWVEwbVdua3EwdnA2dHk4ZyIsInN1YiI6ImQ0ODhlNDM4LWIwZDEtNzAxMS1iYzJjLTYwNGExOTlmY2RkNSIsImNvZ25pdG86Z3JvdXBzIjpbImFkbWlucyJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOGo2UjZqS0NZIiwiY29nbml0bzp1c2VybmFtZSI6ImFsZWNobm9zIiwib3JpZ2luX2p0aSI6IjYyMGEwMTY2LTRhNGItNDA0Ny1iNGQzLWFmN2U5MWE1NTQ0NyIsImNvZ25pdG86cm9sZXMiOlsiYXJuOmF3czppYW06OjgyMDEyNzUwOTgxMjpyb2xlXC9BdXRoU3RhY2stQ29nbml0b0FkbWluUm9sZTRDMTBGQkE0LUVpRFRIb0VmMWFuUiJdLCJhdWQiOiI1ajk3MDFlbzdxbWhmOTFvdGg1ZWtzNmtpaSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzA4NjMxOTg0LCJleHAiOjE3MDg2MzU1ODQsImlhdCI6MTcwODYzMTk4NSwianRpIjoiYzJmMzMwZWQtYmE0Zi00YzNmLWJhY2ItMDQyNDA3ZGE2NTZmIiwiZW1haWwiOiJhZGFtLmxlY2hub3NAZ21haWwuY29tIn0.veWBGSGEUL8Gz9zHLHa0oWm6L_w3Y76-GtXG_oYnDrmgVAHU7e2RYCE7YEYRN2Mh1sZVLEXZdbQIgO-BNjQqbfLQwIeyDz4o0hAakUMYwuBvk1f9WfntTuszCS8jCZvK2ERZ8r9utcpKndjqVWt2RzGmYaSgJXa5xdCZXfSS77y3KhRvLKY-4AI-pnuthheRHFUzxZHkDhM0YXjL3lKSpjI3697bDBa5K-qRMTVNO37uVAno_AUJ1bb0C7iqwWAC0DN9D6QyGetY0coh4ex9IxmoHiti7D9pZKAyriufa5P6VAk-QNJpPWJ1b0rkT4dIZ_4vG2Ydh63hvUPN99NO_g","access_token":"eyJraWQiOiIyRDRPSlk2ZTY4OGt0aU94eXBSNWRvWEtEc3lHYmFCR01WWmJmYm1oN0dvPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNDg4ZTQzOC1iMGQxLTcwMTEtYmMyYy02MDRhMTk5ZmNkZDUiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbnMiXSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOGo2UjZqS0NZIiwidmVyc2lvbiI6MiwiY2xpZW50X2lkIjoiNWo5NzAxZW83cW1oZjkxb3RoNWVrczZraWkiLCJvcmlnaW5fanRpIjoiNjIwYTAxNjYtNGE0Yi00MDQ3LWI0ZDMtYWY3ZTkxYTU1NDQ3IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiBvcGVuaWQgdXNlcnNcL3JlYWQiLCJhdXRoX3RpbWUiOjE3MDg2MzE5ODQsImV4cCI6MTcwODYzNTU4NCwiaWF0IjoxNzA4NjMxOTg1LCJqdGkiOiI1YjI1YTRhYS0zZGZjLTRiZWUtOGIyMS0zMjA4NTRlY2QyOGUiLCJ1c2VybmFtZSI6ImFsZWNobm9zIn0.EWCEwDk46i8fOU4IVnlwgM7XNz_i-jtYcpyOYE8q4YGFC7giK5lWgzgIcD9_zHzUF6bVc6iv1uqtQDEXZlOU7pofMhUWBykqnDUC0Q57X4bP3giDigIYmfj77zJLxlWhwRvim28hZfJg9Sz_RIBcf13lo4D8bZvTE5HVEEI-tztuA4B-1dDY65po2zMHqwBEWF9FYaQC2edm5lyQEtTFleHVawBVbQWIU3Ud16TznAy9WEp2q_QgsNSFKuF-2LnQuO27MfyFWFGza8gDMrBwxVJ1l9bjrJuLH300QqQWLdaX7FTupOZHtvUxeND3K4Hc0-ZTu-nvpGUYOAxemfyyIQ","refresh_token":"eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.RMAy1jPNXxpGdPIr1TUukG685KbV5JgokWkBtnWDFOOlcFSRGWS-uNkglPdJJv4g1r4nk7jxYY8J8HnYmomzlt7OD0FdSnvrCEr61SbDZz5FZ9jhzdl-p2_fEoi_fUydpwG_JUliFucvutwDcBd1W2Ul900b24m1nHSrq_NL8r9uFJcVrkFDWLKQ9fxipSYZyU37LePN-qrxX78pQS2vIIe8tVvrG6CuK4GjdRDUvz10tpDFHdTFH75Bn0GHr5xoXXCuTg7CkuyipVYapYeI_AwJIEYBfLzlUjl99hrfkxDUVqlpyqgj9Jq_NOsXwt-sd73ZbPoBGAurAIw2Yw6mxg.WUaX_U7nlacSnml-.CctUJfNf4hngQr4QktmuTWTT5myYN03GzwVWgktiQpGHccW5jgK9QSQmKIG5v33qHoG5KOpm7xyKU9YsehJjpZHj8yq_NMMEamk7DCv4UR7ooXBJS2Hf6KL7Y-2sFxD6Eec7P37t1HtP5QOB1P5CNZgxW069hQpKj6uyOmOqvrso88Jtk18HjRw0SZY1r2jzdey-PRsoinukv2_JWaH2A35QFuApVwurov3DWl7kNKXkQldOROkYC1xrOidXxVTfirschCxSTcNWf481Jh9BF-W_eYcnyAJU0RAFQjZdLEdEUBTl2uH3jTVfGl9qdq32oXmd_EoeugBCW2zUbgekJbRlfmMWt42bZ67qz6ZAZ-cgijp16g1f01pXKV-vKdXIvjOm6IZin9whMwoK4i6zFjfAZLlYPRP2N-lZCRW8d7YeOz7S00OISy5qHF6DpDhm6sWFe0VBmyaYjZKzZob99DXyXBVLJukn1_R2MD5nJNRzCUvJCni3RZ4vEOW8lUK2RwcGjPiLgMH9EalVcALsIq0zV_SsSHUzgXeuvFz6sP-ygIkogrfLKGnGg5ssMpsL6rAlmSskz39veMmWDRxzx20daQXr_vpRHVmk5_Lg6alX7l3uMNGUOpvLEJssRsDWf99kuyXYWA0aqNr80RiJS67TXX0DrmhKtipvnd_cb3G5xcvVsu5xc37g9UnA57Bzvi1ulB9XlcgfrpKZxgPUTV0OtWvVvUDIoi06aOCOMeQgcMBRKoS6T8Qrplg8OzCGmg5cNPgap8foPfD9qgY5DWDlMgtmtohmH_Sg8dFTAdE0fmWhFXmWw5ErVlg4Ea0FtOl5ix8DqOQx0hT_ClhGW-aiXUHoVy7uZHK2Fa385aBoxrk-DtxO5r0ROUjnVwGTVUdUPBFWAb905nTs1K5cvWgkwdRp-wq4NFhwcDy8T1h5Dss3kouIx53JiZv5E4gsroynF7fOL_4vxlt0dM-ykWBB1sN988cTvqUNunWM3vofNWnaEg-_YP7xbOFas78HKqqm4-2UNlM0bYY8E8D6TDf9KtPbZb0Pt2HuJYv6z9JiAmS24Og7Bce1DiEOlGafLrSMgkHp84TumRXWOLurJtVIW2MajM06k3xvAQYdP4rcb4zgss_Pegtq-6AWgNpJ7TvT14NLjm2GXahu2x6gr4EG8Tr3LRDJwOAkxxNwogv2RfBqI8YrjQzDZ_-jzwhhdOvvik3FswYoeLv-UGy333K4gYYEu9SuPsvV5ag.Uy9EJjNpUCosi7jYTiIdew","expires_in":3600,"token_type":"Bearer"}
 ```
 
 JWT.io deencoded Access Token
-```
+``` json
 {
   "sub": "d488e438-b0d1-7011-bc2c-604a199fcdd5",
   "cognito:groups": [

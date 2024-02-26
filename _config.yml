@@ -67,12 +67,31 @@ baseurl: ""
 paginate: 20
 per_page: 20
 paginate_path: "/page/:num/"
+
+#Kramdown Configuration      
 markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
 plugins:
   - jekyll-paginate
   - jekyll-gist
   - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 
+rss: rss
+# The site generates a feed at /feed.xml. Uncomment below to override
+feed:
+  path: /feed.xml
 
 compress_html:
   clippings: all

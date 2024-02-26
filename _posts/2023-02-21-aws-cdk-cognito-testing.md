@@ -16,9 +16,10 @@ In my previous blog post, ["AWS CDK - Understanding Amazon Cognito Authenticatio
 
 #### AuthService.ts exported functions
 
-Refer to the full example [GitHub Gist](https://gist.github.com/Adam-Lechnos/ffdf98d046af91d1c6fe2138ce94017b)
+<!-- Refer to the full example [GitHub Gist](https://gist.github.com/Adam-Lechnos/ffdf98d046af91d1c6fe2138ce94017b) -->
+{% gist ffdf98d046af91d1c6fe2138ce94017b %}
 
-```
+``` typescript
 Amplify.configure({
     Auth:{
         Cognito: {
@@ -31,7 +32,7 @@ Amplify.configure({
 ```
 * Using AWS Amplify module, configure Cognito User Pool, User Pool Client, and User Pool ID.
 
-```
+``` typescript
 export class AuthService {
     public async login(username: string, password: string){
         const result = (await signIn( {username, password, options: {authFlowType: 'USER_PASSWORD_AUTH'}})) 
@@ -44,7 +45,7 @@ export class AuthService {
 
 ##### Analyzing the 'signIn' TypeScript type is as follows:
 
-```
+``` typescript
 export declare function signIn(input: SignInInput): Promise<SignInOutput>;
 
 export type SignInInput = AuthSignInInput<SignInOptions>;
@@ -68,9 +69,10 @@ export type AuthFlowType = 'USER_SRP_AUTH' | 'CUSTOM_WITH_SRP' | 'CUSTOM_WITHOUT
 
 #### auth.test.ts call to the exported AuthService.ts functions.
 
-Refer to the full example [GitHub Gist](https://gist.github.com/Adam-Lechnos/9a5154ca155b473af230adfd114fe41e)
+<!-- Refer to the full example [GitHub Gist](https://gist.github.com/Adam-Lechnos/9a5154ca155b473af230adfd114fe41e) -->
+{% gist 9a5154ca155b473af230adfd114fe41e %}
 
-```
+``` typescript
 async function testAuth() {
     const service = new AuthService();
     await service.login('user-bob', 'bobs-password');
@@ -93,7 +95,7 @@ async function testAuth() {
 
 ##### Analyzing 'fetchAuthSession' a bit further
 
-```
+``` typescript
 export declare const fetchAuthSession: (options?: FetchAuthSessionOptions) => Promise<AuthSession>;
 
 export type AuthSession = {
@@ -229,12 +231,12 @@ curl --location --request POST 'https://example-est.auth.us-east-1.amazoncognito
 ```
 
 Response
-```
+``` json
 {"id_token":"eyJraWQiOiI3SFRmUHF3OTdVRHQwdTQ0cFoyVVZQMFVCVUV5d0toWlNmYVNsc0pTdWl3PSIsImFsZyI6IlJTMjU2In0.eyJhdF9oYXNoIjoibzBNVDBnWVEwbVdua3EwdnA2dHk4ZyIsInN1YiI6ImQ0ODhlNDM4LWIwZDEtNzAxMS1iYzJjLTYwNGExOTlmY2RkNSIsImNvZ25pdG86Z3JvdXBzIjpbImFkbWlucyJdLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOGo2UjZqS0NZIiwiY29nbml0bzp1c2VybmFtZSI6ImFsZWNobm9zIiwib3JpZ2luX2p0aSI6IjYyMGEwMTY2LTRhNGItNDA0Ny1iNGQzLWFmN2U5MWE1NTQ0NyIsImNvZ25pdG86cm9sZXMiOlsiYXJuOmF3czppYW06OjgyMDEyNzUwOTgxMjpyb2xlXC9BdXRoU3RhY2stQ29nbml0b0FkbWluUm9sZTRDMTBGQkE0LUVpRFRIb0VmMWFuUiJdLCJhdWQiOiI1ajk3MDFlbzdxbWhmOTFvdGg1ZWtzNmtpaSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzA4NjMxOTg0LCJleHAiOjE3MDg2MzU1ODQsImlhdCI6MTcwODYzMTk4NSwianRpIjoiYzJmMzMwZWQtYmE0Zi00YzNmLWJhY2ItMDQyNDA3ZGE2NTZmIiwiZW1haWwiOiJhZGFtLmxlY2hub3NAZ21haWwuY29tIn0.veWBGSGEUL8Gz9zHLHa0oWm6L_w3Y76-GtXG_oYnDrmgVAHU7e2RYCE7YEYRN2Mh1sZVLEXZdbQIgO-BNjQqbfLQwIeyDz4o0hAakUMYwuBvk1f9WfntTuszCS8jCZvK2ERZ8r9utcpKndjqVWt2RzGmYaSgJXa5xdCZXfSS77y3KhRvLKY-4AI-pnuthheRHFUzxZHkDhM0YXjL3lKSpjI3697bDBa5K-qRMTVNO37uVAno_AUJ1bb0C7iqwWAC0DN9D6QyGetY0coh4ex9IxmoHiti7D9pZKAyriufa5P6VAk-QNJpPWJ1b0rkT4dIZ_4vG2Ydh63hvUPN99NO_g","access_token":"eyJraWQiOiIyRDRPSlk2ZTY4OGt0aU94eXBSNWRvWEtEc3lHYmFCR01WWmJmYm1oN0dvPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNDg4ZTQzOC1iMGQxLTcwMTEtYmMyYy02MDRhMTk5ZmNkZDUiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbnMiXSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfOGo2UjZqS0NZIiwidmVyc2lvbiI6MiwiY2xpZW50X2lkIjoiNWo5NzAxZW83cW1oZjkxb3RoNWVrczZraWkiLCJvcmlnaW5fanRpIjoiNjIwYTAxNjYtNGE0Yi00MDQ3LWI0ZDMtYWY3ZTkxYTU1NDQ3IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiBvcGVuaWQgdXNlcnNcL3JlYWQiLCJhdXRoX3RpbWUiOjE3MDg2MzE5ODQsImV4cCI6MTcwODYzNTU4NCwiaWF0IjoxNzA4NjMxOTg1LCJqdGkiOiI1YjI1YTRhYS0zZGZjLTRiZWUtOGIyMS0zMjA4NTRlY2QyOGUiLCJ1c2VybmFtZSI6ImFsZWNobm9zIn0.EWCEwDk46i8fOU4IVnlwgM7XNz_i-jtYcpyOYE8q4YGFC7giK5lWgzgIcD9_zHzUF6bVc6iv1uqtQDEXZlOU7pofMhUWBykqnDUC0Q57X4bP3giDigIYmfj77zJLxlWhwRvim28hZfJg9Sz_RIBcf13lo4D8bZvTE5HVEEI-tztuA4B-1dDY65po2zMHqwBEWF9FYaQC2edm5lyQEtTFleHVawBVbQWIU3Ud16TznAy9WEp2q_QgsNSFKuF-2LnQuO27MfyFWFGza8gDMrBwxVJ1l9bjrJuLH300QqQWLdaX7FTupOZHtvUxeND3K4Hc0-ZTu-nvpGUYOAxemfyyIQ","refresh_token":"eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.RMAy1jPNXxpGdPIr1TUukG685KbV5JgokWkBtnWDFOOlcFSRGWS-uNkglPdJJv4g1r4nk7jxYY8J8HnYmomzlt7OD0FdSnvrCEr61SbDZz5FZ9jhzdl-p2_fEoi_fUydpwG_JUliFucvutwDcBd1W2Ul900b24m1nHSrq_NL8r9uFJcVrkFDWLKQ9fxipSYZyU37LePN-qrxX78pQS2vIIe8tVvrG6CuK4GjdRDUvz10tpDFHdTFH75Bn0GHr5xoXXCuTg7CkuyipVYapYeI_AwJIEYBfLzlUjl99hrfkxDUVqlpyqgj9Jq_NOsXwt-sd73ZbPoBGAurAIw2Yw6mxg.WUaX_U7nlacSnml-.CctUJfNf4hngQr4QktmuTWTT5myYN03GzwVWgktiQpGHccW5jgK9QSQmKIG5v33qHoG5KOpm7xyKU9YsehJjpZHj8yq_NMMEamk7DCv4UR7ooXBJS2Hf6KL7Y-2sFxD6Eec7P37t1HtP5QOB1P5CNZgxW069hQpKj6uyOmOqvrso88Jtk18HjRw0SZY1r2jzdey-PRsoinukv2_JWaH2A35QFuApVwurov3DWl7kNKXkQldOROkYC1xrOidXxVTfirschCxSTcNWf481Jh9BF-W_eYcnyAJU0RAFQjZdLEdEUBTl2uH3jTVfGl9qdq32oXmd_EoeugBCW2zUbgekJbRlfmMWt42bZ67qz6ZAZ-cgijp16g1f01pXKV-vKdXIvjOm6IZin9whMwoK4i6zFjfAZLlYPRP2N-lZCRW8d7YeOz7S00OISy5qHF6DpDhm6sWFe0VBmyaYjZKzZob99DXyXBVLJukn1_R2MD5nJNRzCUvJCni3RZ4vEOW8lUK2RwcGjPiLgMH9EalVcALsIq0zV_SsSHUzgXeuvFz6sP-ygIkogrfLKGnGg5ssMpsL6rAlmSskz39veMmWDRxzx20daQXr_vpRHVmk5_Lg6alX7l3uMNGUOpvLEJssRsDWf99kuyXYWA0aqNr80RiJS67TXX0DrmhKtipvnd_cb3G5xcvVsu5xc37g9UnA57Bzvi1ulB9XlcgfrpKZxgPUTV0OtWvVvUDIoi06aOCOMeQgcMBRKoS6T8Qrplg8OzCGmg5cNPgap8foPfD9qgY5DWDlMgtmtohmH_Sg8dFTAdE0fmWhFXmWw5ErVlg4Ea0FtOl5ix8DqOQx0hT_ClhGW-aiXUHoVy7uZHK2Fa385aBoxrk-DtxO5r0ROUjnVwGTVUdUPBFWAb905nTs1K5cvWgkwdRp-wq4NFhwcDy8T1h5Dss3kouIx53JiZv5E4gsroynF7fOL_4vxlt0dM-ykWBB1sN988cTvqUNunWM3vofNWnaEg-_YP7xbOFas78HKqqm4-2UNlM0bYY8E8D6TDf9KtPbZb0Pt2HuJYv6z9JiAmS24Og7Bce1DiEOlGafLrSMgkHp84TumRXWOLurJtVIW2MajM06k3xvAQYdP4rcb4zgss_Pegtq-6AWgNpJ7TvT14NLjm2GXahu2x6gr4EG8Tr3LRDJwOAkxxNwogv2RfBqI8YrjQzDZ_-jzwhhdOvvik3FswYoeLv-UGy333K4gYYEu9SuPsvV5ag.Uy9EJjNpUCosi7jYTiIdew","expires_in":3600,"token_type":"Bearer"}
 ```
 
 JWT.io deencoded Access Token
-```
+``` json
 {
   "sub": "d488e438-b0d1-7011-bc2c-604a199fcdd5",
   "cognito:groups": [

@@ -14,6 +14,8 @@ layout: default
 
 <div class="content">
   <div class="post">{{ content }}</div>
+  {% include buycoffee.html %}
+  <br>
   {% include share-page.html %}
 </div>
 
@@ -54,6 +56,8 @@ layout: default
   {% endif %}
 </div>
 
+
+
 <div class="disqus-comments">
   <div id="disqus_thread"></div>
   <script type="text/javascript">
@@ -70,4 +74,5 @@ layout: default
     })();
     /* ]]> */
   </script>
+
 </div>
