@@ -215,7 +215,7 @@ When using resource servers for creating auth flows with different scopes, the A
  * This is where the Auth flows, scopes, callback URLs, and timeout options are assigned.
 * Click View Hosted UI, and authenticate. If only a `code=` response is generated within the URL, then an Authorization code grant is being used. Test the returned Authorization Code as follows:
 
-[Example Screenshot]({{ site.github-content-ss }}/devops/Devops-AWS-CDK-Cognito-Test-Screenshot-2023-02-22-175035.png?raw=true)
+[Example Screenshot]({{ site.github-content-ss }}/devops/Devops-AWS-CDK-Cognito-Test-Screenshot-2023-02-22-175035.png?raw=true){:target="_blank" rel="noopener"}
 ![Example Screenshot]({{ site.github-content-ss }}/devops/Devops-AWS-CDK-Cognito-Test-Screenshot-2023-02-22-175035.png?raw=true)
 
 The following is an example CURL request/response to/from the token endpoint
