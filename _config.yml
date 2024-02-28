@@ -100,5 +100,5 @@ github-content: https://github-content-cache.adamlechnos.com/Adam-Lechnos/diagra
 # Use or referencing external content from GitHub repo, dedicated to screenshots, appended with correct repo folder
 github-content-ss: https://github-content-cache.adamlechnos.com/Adam-Lechnos/screenshots/blob/main
 
-# Used by _data/projects.json, when adding an 'image' value, only the repo name and ownwards of the raw url is required, for the same reason above
+# Used by _data/projects.json, when adding an 'image' value reference value
 github-project-image: https://github-content-cache.adamlechnos.com/Adam-Lechnos/

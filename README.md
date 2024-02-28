@@ -1,20 +1,20 @@
 ## The Risky Pipeline
 
-> This project is a fork and has been modified from [Agus Makmum's Modified Simple Grey Theme for Jekyll](https://agusmakmun.github.io)
+> This project is a fork and has been modified from [Agus Makmum's Modified Simple Grey Theme for Jekyll](https://github.com/agusmakmun/agusmakmun.github.io)
 > and the search posts using [Super Search](https://github.com/chinchang/super-search)
 
 ### Demo
 * [https://adamlechnos.com](https://adamlechnos.com)
 
-#### Attribution and Credit To The Original Theme Author
-* Agus Makmum
-* [https://agusmakmun.github.io](https://agusmakmun.github.io)
 
 #### Features
 
 * Sitemap and XML Feed
 * Pagination in homepage
 * Posts under category
+* Post categories in home pages
+* Code fencing and GitHub Gist syntax highlighting
+* Buy Me a Coffee Integration
 * Realtime Search Posts _(title & description)_ by query.
 * Related Posts
 * Highlight pre

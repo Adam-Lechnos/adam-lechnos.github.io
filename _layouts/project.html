@@ -23,7 +23,7 @@ layout: default
       {% for i in site.data.projects %}
       <div class="project-item project-outer" data-tags='{{ i.tags | jsonify | downcase }}'>
         <div class="project-inner">
-          <a href="{{ i.image }}" class="thickbox">
+          <a href="{{ site.github-project-image }}{{ i.image }}" class="thickbox">
             <div class="project-img bordered" style="background-image: url('{{ site.github-project-image }}{{ i.image }}');"></div>
           </a>
           {% assign p_url = nil %}
