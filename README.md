@@ -10,9 +10,9 @@
 #### Features
 
 * Sitemap and XML Feed
-* Pagination in homepage
+* Pagination on the homepage
 * Posts under category
-* Post categories in home pages
+* Post categories on the homepage under posts
 * Code fencing and GitHub Gist syntax highlighting
 * Buy Me a Coffee Integration
 * Realtime Search Posts _(title & description)_ by query.
