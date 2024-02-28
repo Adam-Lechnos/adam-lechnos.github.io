@@ -1,6 +1,6 @@
 ## The Risky Pipeline
 
-> This project is a fork and has been modified from [Akus Makmum's Simple Grey Theme for Jekyll](https://agusmakmun.github.io)
+> This project is a fork and has been modified from [Agus Makmum's Modified Simple Grey Theme for Jekyll](https://agusmakmun.github.io)
 > and the search posts using [Super Search](https://github.com/chinchang/super-search)
 
 ### Demo
@@ -87,4 +87,4 @@ bundle update
 
 ### Contributing
 
-Feel free to [open a bug](https://github.com/agusmakmun/agusmakmun.github.io/issues) or [contribute to code](https://github.com/agusmakmun/agusmakmun.github.io/pulls)!
+Feel free to [open a bug](https://github.com/adam-lechnos/adam-lechnos.github.io/issues) or [contribute to code](https://github.com/adam-lechnos/adam-lechnos.github.io/pulls)!
