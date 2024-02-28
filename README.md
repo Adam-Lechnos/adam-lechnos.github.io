@@ -4,6 +4,9 @@
 > and the search posts using [Super Search](https://github.com/chinchang/super-search)
 
 ### Demo
+* [https://adamlechnos.com](https://adamlechnos.com)
+
+### Attribution & Credit
 * [https://agusmakmun.github.io](https://agusmakmun.github.io)
 
 #### Features
