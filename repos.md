@@ -4,10 +4,10 @@ title: Code & Artifact Repos
 permalink: /repos/
 ---
 
-### [Search](https://github.com/search/advanced?q=user%3Aadam-lechnos+topic%3A){:target="_blank" rel="noopener"}
+### [Search](https://github.com/search/advanced?q=user%3Aadam-lechnos+user%3Aadam-lechnos-nsprv+topic%3A){:target="_blank" rel="noopener"}
 Add as many 'topic:' syntax entries as desired to narrow down the search within the Advanced Search field.
 <br>
-<sub>Example: `user:adam-lechnos topic:devops topic:aws`. [List of Topics](/topics/){:target="_blank" rel="noopener"}<sub>
+<sub>Example: `user:adam-lechnos user:adam-lechnos-nsprv topic:devops topic:aws`. [List of Topics](/topics/){:target="_blank" rel="noopener"}<sub>
 
 ### [All](https://github.com/Adam-Lechnos?tab=repositories){:target="_blank" rel="noopener"}
 List all Public repositories
