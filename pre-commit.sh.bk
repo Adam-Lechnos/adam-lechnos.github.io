@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# This is a pre-commit hook, to be placed in .git/hook folder within the repo.
+# Remove the appended '.bk' extension if restoring this hook.
+# This file itself is created upon every commit.
+
+scriptpath="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+cp "$0" $scriptpath/../../pre-commit.sh.bk
+
+/bin/bash $scriptpath/../../parseTopics.sh
