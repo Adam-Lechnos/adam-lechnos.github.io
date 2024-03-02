@@ -30,4 +30,4 @@ A list of searchable topics parsed across all repos
 * web-app
 * wiki
 
-<sub>Last Updated: 03/01/2024<sub>
+<sub>Last automated update: 03/01/2024<sub>
