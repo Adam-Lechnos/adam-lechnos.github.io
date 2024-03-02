@@ -15,6 +15,7 @@
 * Post categories on the homepage under posts
 * Code fencing and GitHub Gist syntax highlighting
 * Buy Me a Coffee Integration
+* Automated generation of GitHub topics list, parsed from Code & Artifacts page
 * Realtime Search Posts _(title & description)_ by query.
 * Related Posts
 * Highlight pre
