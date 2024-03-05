@@ -388,7 +388,7 @@ private createResourceServers(){
       });
 }
 ```
-* Created two different resource servers named 'read-only-client' and 'full-access-client'. The resource servers create two different access scopes, `scopeName: 'read', scopeDescription: 'Read-only access'` and `scopeName: '*', scopeDescription: 'Full access'`, added to their respective resource servers. Each resource servers is accessed by its client ID, generated upon creation. The resource servers are then accessed by the hosted UI and client ID. In response will be either an ID and Access Token or Authorization Code, depending on the Authorization Flow. Authorization Codes are then redeemed for ID & Access Tokens, using the ['Token'](https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html) endpoint.
+* Created two different resource servers named 'read-only-client' and 'full-access-client'. The resource servers create two different access scopes, `scopeName: 'read', scopeDescription: 'Read-only access'` and `scopeName: '*', scopeDescription: 'Full access'`, added to their respective resource servers. Each resource servers is accessed by its client ID, generated upon creation. The resource servers are then accessed by the hosted UI and client ID. In response will be either an ID and Access Token or Authorization Code, depending on the Authorization Flow. Authorization Codes are then redeemed for ID & Access Tokens, using the [Token Endpoint](https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html).
 
 The following is an example CURL request/response to/from the token endpoint
 
