@@ -145,6 +145,7 @@ Executing the test via the CDK CLI should print to console the ID Token, Access 
 
 ##### Example Output
 ```
+--------ID TOken--------
 {
   toString: [Function: toString],
   payload: {
@@ -167,7 +168,7 @@ Executing the test via the CDK CLI should print to console the ID Token, Access 
     email: 'user@user.com'
   }
 }
---------SEPARATOR--------
+--------Access Token--------
 {
   toString: [Function: toString],
   payload: {
@@ -186,6 +187,7 @@ Executing the test via the CDK CLI should print to console the ID Token, Access 
     username: 'user'
   }
 }
+--------AWS Credentials--------
 {
   accessKeyId: 'ASDFRWSDVFU2AZSFREWDS',
   secretAccessKey: 'examplesecretaccesskey',
