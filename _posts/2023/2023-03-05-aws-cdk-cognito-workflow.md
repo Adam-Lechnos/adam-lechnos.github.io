@@ -1,6 +1,6 @@
 ---
-title: "AWS CDK - Breaking Down AWS Cognito OAuth & OIDC"
-date: 2023-02-22 12:00:00 -0000
+title: "AWS CDK - Breaking Down AWS Cognito OAuth & OIDC Workflow"
+date: 2023-03-05 12:00:00 -0000
 categories: aws devops cdk typescript
 ---
 
