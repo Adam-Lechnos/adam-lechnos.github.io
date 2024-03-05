@@ -10,7 +10,7 @@ categories: aws devops cdk typescript
 
 ![Amazon Cognito OAuth & OIDC Workflow]({{ site.github-content }}/devops/OAuth20-Sequence-Diagram.drawio.svg?raw=true)
 
-In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Authorization"](/aws/devops/cdk/typescript/2023/02/21/aws-cdk-cognito-use.html){:target="_blank" rel="noopener"}, I go-over implementing Cognito Authentication & Authorization workflow into your application via the AWS CDK.
+In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Authorization"](/aws/devops/cdk/typescript/2023/02/22/aws-cdk-cognito-use.html){:target="_blank" rel="noopener"}, I go-over implementing Cognito Authentication & Authorization workflow into your application via the AWS CDK.
 
 ### Breaking It Down
 
@@ -21,7 +21,7 @@ In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Au
 * Authorization Server - Cognito User Pool, where users, User Groups, User Groups default roles, App Clients, and Resouce Servers are defined. Federated Identity may also be configured here.
   * App Client - Custom Scopes are attached from the Resource Server to each App Client. Multiple App Clients may be defined each with their own set of Resource Server created Custom Scopes.
   * Federated Identity Providers (IdP) may be OAuth, OIDC, SAML, and other popular social and cloud intergrations such as 'Sign-in with Amazon', 'Sign-in with Google' and Facebook.
-* AWS Credentials - Cognito Identity Pool which gets associated with an App Client. The Identity Pool associated with the App Client gets used. Role mappings are defined based on either the Rules or Token method. Refer to the [previous post](aws/devops/cdk/typescript/2023/02/22/aws-cdk-cognito-use.html) for more details. Default IAM Roles are configured for Authenticated and Unauthenticated (Guest) access, providing a baseline set of roles the Web App may use. Role mapping may either be used with or overwrite the default IAM role base on the Role Mapping Rule utilized.
+* AWS Credentials - Cognito Identity Pool which gets associated with an App Client. The Identity Pool associated with the App Client gets used. Role mappings are defined based on either the Rules or Token method. Refer to the [previous post](/aws/devops/cdk/typescript/2023/02/22/aws-cdk-cognito-use.html) for more details. Default IAM Roles are configured for Authenticated and Unauthenticated (Guest) access, providing a baseline set of roles the Web App may use. Role mapping may either be used with or overwrite the default IAM role base on the Role Mapping Rule utilized.
 * API Gateway - A Cognito Authorizer may be defined for the API, which then gets utilzed be each API method. The API methods may specify Custom Scopes to ensure more fined-grained permissions. The API method can check for these custom scopes before access to the API is granted. Custom Scopes are defined in the Resource Server and attached to the App Client within an Identity Pool before they get injected into the the Access Token for authorization. The Base64 encoded JWT token must be specified.
 
 #### The Flow
