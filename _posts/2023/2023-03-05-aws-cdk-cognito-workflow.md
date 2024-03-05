@@ -10,7 +10,7 @@ categories: aws devops cdk typescript
 
 ![Amazon Cognito OAuth & OIDC Workflow]({{ site.github-content }}/devops/OAuth20-Sequence-Diagram.drawio.svg?raw=true)
 
-In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Authorization"](aws/devops/cdk/typescript/2023/02/22/aws-cdk-cognito-use.html){:target="_blank" rel="noopener"}, I go-over implementing Cognito Authentication & Authorization workflow into your application via the AWS CDK.
+In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Authorization"](/aws/devops/cdk/typescript/2023/02/21/aws-cdk-cognito-use.html){:target="_blank" rel="noopener"}, I go-over implementing Cognito Authentication & Authorization workflow into your application via the AWS CDK.
 
 ### Breaking It Down
 
@@ -33,5 +33,5 @@ In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Au
   1. Authorization Grant - Requests an Authorization Code to the App Clients token endpoint and return an Access Code. Use the Access Code to request an Access Token. Custom Scopes are injected into the Access Token via the Resource Server. This exchange occurs outside of the browser on the server side. The client only received the final Access Token.
 1. The multiple grants returned to the client as follows:
   1. Access Token in JWT format - Used for accessing API resources defined within the API Gateway.
-  1. ID Token in JWT format - Open ID Connect JWT containing the Cognito Roles and Groups, which enable IAM assumed roles to the listed role ARNs, and [standard claims](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims) such as 'sub' and 'name'. The details provided enable personalized user experience within the web application. More details about ID TOkens from a prior [blog post](aws/devops/cdk/typescript/2023/02/20/aws-cdk-cognito.html#id-tokens)
+  1. ID Token in JWT format - Open ID Connect JWT containing the Cognito Roles and Groups, which enable IAM assumed roles to the listed role ARNs, and [standard claims](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims) such as 'sub' and 'name'. The details provided enable personalized user experience within the web application. More details about ID TOkens from a prior [blog post](/aws/devops/cdk/typescript/2023/02/20/aws-cdk-cognito.html#id-tokens)
   1. AWS Credentails - Contains an AWS Access Key, Secret Access Key, and Session Token, for use by the Web Application for access to various AWS resources. For example, permissions to an S3 bucket for uploading an image which can than be returned as a profile photo. The assumed role as contingent upon the Identity Pool's default assigned role and/or Role Mappings which then dictate the `cognito:preferred_role` value within the token. Refer to [Assigning precedence values to groups](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-user-groups.html#assigning-precedence-values-to-groups) for more details.

@@ -10,7 +10,7 @@ categories: aws devops cdk typescript
 
 ![Amazon Cognito Client Workflow]({{ site.github-content }}/devops/Devops-IaC-AWS_CDK_Cognito.drawio.svg?raw=true)
 
-In my previous blog post, ["AWS CDK - Understanding Amazon Cognito Authentication and Authorization"](aws-cdk-cognito.html){:target="_blank" rel="noopener"}, I go-over creating an Auth Stack, whereby a web service may provide protected access to APIs and AWS resources, depending on client authentication and access scopes. This article will delve into testing the Auth Stack, using TypeScript calls to the built-in CDK modules and constructs.
+In my previous blog post, ["AWS CDK - Understanding Amazon Cognito Authentication and Authorization"](/aws/devops/cdk/typescript/2023/02/20/aws-cdk-cognito.html){:target="_blank" rel="noopener"}, I go-over creating an Auth Stack, whereby a web service may provide protected access to APIs and AWS resources, depending on client authentication and access scopes. This article will delve into testing the Auth Stack, using TypeScript calls to the built-in CDK modules and constructs.
 
 ### Creating an AuthService Test 
 
