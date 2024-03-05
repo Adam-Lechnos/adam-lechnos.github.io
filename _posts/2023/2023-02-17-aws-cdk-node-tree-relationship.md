@@ -1,7 +1,7 @@
 ---
 title: "AWS Cloud Development Kit (CDK) - Understanding the Node/Tree Relationship"
 date: 2023-02-17 12:00:00 -0000
-categories: aws devops
+categories: aws devops cdk
 ---
 
 ### Diagram
