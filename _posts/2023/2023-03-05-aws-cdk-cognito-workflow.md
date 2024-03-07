@@ -37,7 +37,7 @@ In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Au
     1. ID Token in JWT format - Open ID Connect JWT containing the Cognito Roles and Groups, which enable IAM assumed roles to the listed role ARNs, and [standard claims](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims) such as 'sub' and 'name'. The details provided enable personalized user experience within the web application. More details about ID TOkens from a prior [blog post](/aws/devops/cdk/typescript/2023/02/20/aws-cdk-cognito.html#id-tokens)
     1. AWS Credentials - Contains an AWS Access Key, Secret Access Key, and Session Token, for use by the Web Application for access to various AWS resources. For example, permissions to an S3 bucket for uploading an image which can than be returned as a profile photo. The assumed role as contingent upon the Identity Pool's default assigned role and/or Role Mappings which then dictate the `cognito:preferred_role` value within the token. Refer to [Assigning precedence values to groups](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-user-groups.html#assigning-precedence-values-to-groups) for more details.
 
-#### Breaking Down Scopes A Bit Further
+#### Breaking Down OAuth Scopes A Bit Further
 I wanted to add some additional context that may have been lacking in previous blog posts regarding scopes. Here is how I break down with references to additional reading:
 
 * A great example of custom scopes may be explored via [Google's OAuth 2.0 Playground](https://developers.google.com/oauthplayground/). Using these third party defined scopes is what enables access permissions to those APIs, such as the aforementioned Google APIs.
@@ -47,3 +47,80 @@ I wanted to add some additional context that may have been lacking in previous b
   * email - Authorizes the user attributes `email` and `email_verified` with `email_verified` sent back from Cognito if the value is explicitly set.
   * phone - Authorizes the user attributes `phone_number` and `phone_number_verified`.
   * Refer to the [Developer Guide](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html#cognito-user-pools-define-resource-servers-about-scopes) for Amazon Cognito Scopes for more details.
+
+##### Example OAuth Access Token
+```
+{
+   "sub":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "device_key": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "cognito:groups":[
+      "testgroup"
+   ],
+   "iss":"https://cognito-idp.us-west-2.amazonaws.com/us-west-2_example",
+   "version":2,
+   "client_id":"xxxxxxxxxxxxexample",
+   "origin_jti":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "event_id":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "token_use":"access",
+   "scope":"phone openid profile resourceserver.1/appclient2 email",
+   "auth_time":1676313851,
+   "exp":1676317451,
+   "iat":1676313851,
+   "jti":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+   "username":"my-test-user"
+}
+```
+
+#### Breaking Down OpenID Connect A Bit Further
+I also wanted to add a bit more clarification regarding OpenID Connect (OIDC) ID Tokens. OpenID Connect will use the same Authorization Server as OAuth, however, for OpenID Connect, the Authorization Server will return information regarding the authenticating user. In case if you have not figured out the difference between OpenID Connect and OAuth, OpenID Connect is an Authentication protocol as opposed to OAuth being an Authorization protocol. OpenID Connect is more interested in solving Authentication and the mechanism by which we acquire details specific to the end-user, such as profile related email, name, phone number, etc.
+
+* OpenID Connect makes use of [UserInfo endpoint](https://docs.aws.amazon.com/cognito/latest/developerguide/userinfo-endpoint.html). When you specify the `profile` and `openid` scopes in OAuth, you are granting the bearer permissions to use the profile and other related OpenID connect information against this endpoint.
+* Typically, the app makes a call from the back channel and not the browser. For single page application written in client side code such as React, this will however occur between the client and Authorization server.
+  * For Cognito, the UserInfo endpoint is `/oauth2/userInfo`.
+  * Amazon Cognito returns the `email_verified` and `phone_number_verified` claims within the ID Token.
+  * Recall, the standard claims that are issued by OpenID Connect are presented within the [official spec](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims).
+    * Some of these claims are: `sub`, `name`, `given_name`, and `family_name`.
+  * Also recall, we were scoped by the OAuth Access token which granted the application access to these claims. Cognito User Pool users only require the  `aws.cognito.signin.user.admin` scope.
+  * The user attributed are presented by the userInfo endpoint when presented with an OAuth Access Token. The Open ID Connect Token responds with user attributed based on the scopes of the OAuth token.
+  * The OAuth third-party identity provider (IdP) also hosts a userInfo endpoint. When the user authenticated with that IdP, Cognito will exchange an authorization code with the IdP token endpoint. The user pool then passes the IdP access token to the userInfo endpoint for authorized retrieval of the user attributes from that IdP.
+  * Read more details about the UserInfo endpoint from the [Developer Guide](https://docs.aws.amazon.com/cognito/latest/developerguide/userinfo-endpoint.html) for Cognito.
+
+##### Example OIDC ID Token
+```
+{
+    "sub": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "cognito:groups": [
+        "test-group-a",
+        "test-group-b",
+        "test-group-c"
+    ],
+    "email_verified": true,
+    "cognito:preferred_role": "arn:aws:iam::111122223333:role/my-test-role",
+    "iss": "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_example",
+    "cognito:username": "my-test-user",
+    "middle_name": "Jane",
+    "nonce": "abcdefg",
+    "origin_jti": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "cognito:roles": [
+        "arn:aws:iam::111122223333:role/my-test-role"
+    ],
+    "aud": "xxxxxxxxxxxxexample",
+    "identities": [
+        {
+            "userId": "amzn1.account.EXAMPLE",
+            "providerName": "LoginWithAmazon",
+            "providerType": "LoginWithAmazon",
+            "issuer": null,
+            "primary": "true",
+            "dateCreated": "1642699117273"
+        }
+    ],
+    "event_id": "64f513be-32db-42b0-b78e-b02127b4f463",
+    "token_use": "id",
+    "auth_time": 1676312777,
+    "exp": 1676316377,
+    "iat": 1676312777,
+    "jti": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "email": "my-test-user@example.com"
+}
+```

@@ -13,31 +13,33 @@ categories: aws devops cdk typescript
 ### The Moving Pieces 
 Components of Amazon Cognito which are part of the authentication and authorization flow:
 
-#### Cognito User Pools - Authentication
+#### Cognito User Pools - Authentication, Authorization, and Resource Servers
+* Refer to my blog post, [AWS CDK - Breaking Down AWS Cognito OAuth & OIDC Workflow](/aws/devops/cdk/typescript/2023/03/05/aws-cdk-cognito-workflow.html) for more details about what Authentication, Authorization, and Resource Servers are.
 * Contains a directory of users & groups or, may be delegated to a Federated Identity Provider for sign-in experience, such as Google, Facebook, Amazon, Apple, SAML, or OIDC (OpenID Connect).
 * Groups created within the User Pool are associated with IAM ([AWS Identity and Access Management](https://aws.amazon.com/iam/)) roles, assumed by the user for performing tasks within AWS, such as reading S3 Buckets.
   * Each group may have a separate IAM Role configured, for allowing delineated permissions amongst disparate [managed group members](https://docs.aws.amazon.com/cognito/latest/developerguide/managing-users.html?icmpid=docs_cognito_console_help_panel).
 * App integration settings, where app clients are defined and its token expiration, authentication flows, OAUTH 2.0 grant types, and OpenID Connect Scopes and Identity Providers are defined.
   * Authentication flow options: ALLOW_ADMIN_USER_PASSWORD_AUTH, ALLOW_USER_PASSWORD_AUTH, ALLOW_REFRESH_TOKEN_AUTH, ALLOW_USER_PASSWORD_AUTH, and ALLOW_USER_SRP_AUTH.
   * OAuth 2.0 grant type options: 
-    * Authorization code grant, provides an authorization code as the response to be exchanges on a back-channel or server side for a Access Token. The exchange would include a client ID and Client Secret.
-    * Implicit grant, specifies that the client should get the access token (and optionally, ID token, based on scopes) directly. (exposes the OAuth (Access) token within the URL)
-  * OpenID Connect Scopes, at least one scope is required to specify the attributes the app client can retrieve for access. Scopes include:
+    * Authorization code grant - provides an authorization code as the response to be exchanges on a back-channel or server side for a Access Token. The exchange would include a client ID and Client Secret.
+    * Implicit grant - specifies that the client should get the access token (and optionally, ID token, based on scopes) directly. (exposes the OAuth (Access) token within the URL)
+  * OpenID Connect Scopes - at least one scope is required to specify the attributes the app client can retrieve for access. Scopes include:
     * `aws.cognito.sigin.user.admin`, `openid`, `email`, `phone`, and `profile` (the last three options also require OpenID to be selected)
-  * Identity providers, which are made available to the client. Some or all of your user pool external Identity Providers may be selected to authenticate your users.
+    * These scopes authorize the access token for retrieval of user attributes from the [userInfo endpoint](https://docs.aws.amazon.com/cognito/latest/developerguide/userinfo-endpoint.html) for OpenID Connect.
+  * Identity providers - which are made available to the client. Some or all of your user pool external Identity Providers may be selected to authenticate your users.
     * Selecting at least `Cognito user pool` enables authentication via the Cognito User Pool, which enables access to its Federated Identity Providers, or, its own internal set of users.
   * Adding at least a [Configured User Pool Domain](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-assign-domain.html?icmpid=docs_cognito_console_help_panel) within the App Integration tab provides a Hosted UI for the user sign-in experience.
   * The client is where the Authentication flow session duration, refresh token expiration, access token expiration, ID token expiration, and other advanced authentication settings are specified.
 
-#### Cognito Identity Pools - Authorization
+#### Cognito Identity Pools - AWS Resource Access via IAM Assumed Roles
 * Grants users access to AWS resources, and are associated with Identity Pools as the Identity Provider. External Identity Providers may be selected here as well, bypassing the use of Amazon Cognito User Pools.
 * Default Authenticated and Unauthenticated (Guest Access) roles may be specified, whereby the ID pool is the trusted resource assuming the role on behalf of the user.
 * Custom roles may be added then mapped via the user pool and its assigned groups (Admin group members will be assigned the Admin IAM role for example).
   * This mapping would be used either in conjunction or in lieu of the IAM roles associated with groups created within the Cognito User Pools, depending on how the role mappings are configured.
-      * Rule based role mappings will match claim values, whereas Token based role mappings will perform a lookup of the IAM Role associated with `cognito:role` and `cognito:preferred_role` claims injected from the Cognito Identity Pool. 
+      * Rule based role mappings will match claim values, whereas Token based role mappings will perform a lookup of the IAM Role associated with `cognito:role` and `cognito:preferred_role` claims injected into the ID Token from the Cognito Identity Pool. 
   * Using a Federated Identity Provider within the User Pool would require mapping the custom roles via the claim values to IAM Roles. Rule based role mappings are required. (more on this below)
 * The ARN of the assigned user's role get injected into the [ID Token](https://auth0.com/docs/secure/tokens/id-tokens/id-token-structure) as `"cognito:role": [<list of role ARNs>]`.
-* In addition, `"cognito:preferred_role":"<role ARN>"` gets injected, based on the role with the best (lowest) precedence value. If there is only one role, this will be the value.
+* In addition, `"cognito:preferred_role":"<role ARN>"` gets injected in the ID Token, based on the role with the best (lowest) precedence value. If there is only one role, this will be the value.
   * i.e., if authenticated, but no group is assigned within the user pool, use the default role associated with the Authenticated settings.
 
 #### AWS Amplify - Authentication Mechanism
