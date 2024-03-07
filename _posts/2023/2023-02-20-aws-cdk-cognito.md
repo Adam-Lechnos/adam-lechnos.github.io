@@ -20,7 +20,7 @@ Components of Amazon Cognito which are part of the authentication and authorizat
 * App integration settings, where app clients are defined and its token expiration, authentication flows, OAUTH 2.0 grant types, and OpenID Connect Scopes and Identity Providers are defined.
   * Authentication flow options: ALLOW_ADMIN_USER_PASSWORD_AUTH, ALLOW_USER_PASSWORD_AUTH, ALLOW_REFRESH_TOKEN_AUTH, ALLOW_USER_PASSWORD_AUTH, and ALLOW_USER_SRP_AUTH.
   * OAuth 2.0 grant type options: 
-    * Authorization code grant, provides an authorization code as the response
+    * Authorization code grant, provides an authorization code as the response to be exchanges on a back-channel or server side for a Access Token. The exchange would include a client ID and Client Secret.
     * Implicit grant, specifies that the client should get the access token (and optionally, ID token, based on scopes) directly. (exposes the OAuth (Access) token within the URL)
   * OpenID Connect Scopes, at least one scope is required to specify the attributes the app client can retrieve for access. Scopes include:
     * `aws.cognito.sigin.user.admin`, `openid`, `email`, `phone`, and `profile` (the last three options also require OpenID to be selected)
@@ -390,7 +390,7 @@ private createResourceServers(){
 ```
 * Created two different resource servers named 'read-only-client' and 'full-access-client'. The resource servers create two different access scopes, `scopeName: 'read', scopeDescription: 'Read-only access'` and `scopeName: '*', scopeDescription: 'Full access'`, added to their respective resource servers. Each resource servers is accessed by its client ID, generated upon creation. The resource servers are then accessed by the hosted UI and client ID. In response will be either an ID and Access Token or Authorization Code, depending on the Authorization Flow. Authorization Codes are then redeemed for ID & Access Tokens, using the [Token Endpoint](https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html).
 
-The following is an example CURL request/response to/from the token endpoint
+The following is an example CURL request/response to/from the token endpoint for the Authorization Code flow using an Access Code. This is for illustrative purposes and would not work for a single page app written in React.
 
 Request
 ```

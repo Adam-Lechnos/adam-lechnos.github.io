@@ -211,6 +211,7 @@ When using resource servers for creating auth flows with different scopes, the A
 * Custom scopes added via Resource Servers are then defined within each respective Cognito User Pool Client, each mapping to a Resource Server based on its assigned Custom Scopes.
 * Each client provides a separate hosted UI, presented to the end-user for authenticating to the application. Depending on how the auth flow is configured, either an Access and ID token are returned or an Authorization Code which is then exchanged for Access and ID tokens.
   * The former is an Implicit grant, which exposes the tokens within the URL, while the latter uses Authorization code grant flow, which is more secure.
+  * Authorization code flow requires a back-channel or server side which will not work with a single page app such as those written in React.
 
 ##### Breaking It Down
 * Within the AWS Console, click on the appropriate Hosted UI, by first going to the Cognito User Pool, App Integration Tab, then click on the App Client to test under 'App Client and Analytics'.
