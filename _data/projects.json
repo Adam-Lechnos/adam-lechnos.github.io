@@ -1,5 +1,13 @@
 [
 	{
+		"slug": "windows-enforcer",
+		"name": "Windows Enforcer for NAS Devices",
+		"image": "windows-enforcer/blob/main/windows-enforcement-diagram.drawio.svg?raw=true",
+		"url": "https://github.com/Adam-Lechnos/windows-enforcer",
+		"date": "March 2023",
+		"tags": ["Bash", "Powershell", "Windows", "Winget"]
+	},
+	{
 		"slug": "jenkins-terraform-ansible-aws",
 		"name": "Jenkins, Terraform, and Ansible",
 		"image": "jenkins-tf-ansible-pipeline-sample/raw/main/images/jenkins_ansible_aws.png?raw=true",

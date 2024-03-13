@@ -261,3 +261,5 @@ JWT.io deencoded Access Token
 * The de-encoded Base64 Access Token indicates the scope values which were also attached to the resource server, `"scope": "aws.cognito.signin.user.admin openid users/read"`.
 
 * For Implicit grants, the ID and Access Tokens are returned directly within the URL.
+
+**Code Snippet Credits:** [Alex Dan](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1) -modified and re-tested by me for this post

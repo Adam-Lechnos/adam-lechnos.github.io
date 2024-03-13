@@ -194,3 +194,5 @@ function App() {
   * Recall the LoginComponent's function decleration, which declared the paramters as `function LoginComponent({ authService, setUserNameCb }: LoginProps)`.
     * `setUserNameCb` in LoginComponent is the triggers the `setUserName` 'setIndex' in App.tsx, as it's called back.
     * LoginProps type declared 'setUserNameCb' as an anonymous function, returning void as: `setUserNameCb: (userName: string) => void`
+
+**Code Snippet Credits:** [Alex Dan](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1) -modified and re-tested by me for this post
