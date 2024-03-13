@@ -8,6 +8,7 @@ A list of searchable topics parsed across all repos
 
 * aws
 * bash
+* batch
 * devops
 * financial
 * for-fun
@@ -15,6 +16,7 @@ A list of searchable topics parsed across all repos
 * google-apps-script
 * google-sheets
 * groovy
+* home-network
 * invoicing
 * java
 * javascript
@@ -29,5 +31,6 @@ A list of searchable topics parsed across all repos
 * terraform
 * web-app
 * wiki
+* windows
 
 <sub>Last automated update: 03/13/2024<sub>
