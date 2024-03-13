@@ -2,7 +2,7 @@
 	{
 		"slug": "windows-enforcer",
 		"name": "Windows Enforcer for NAS Devices",
-		"image": "windows-enforcer/blob/main/windows-enforcement-diagram.drawio.svg?raw=true",
+		"image": "windows-enforcer/raw/main/windows-enforcement-diagram.drawio.png?raw=true",
 		"url": "https://github.com/Adam-Lechnos/windows-enforcer",
 		"date": "March 2023",
 		"tags": ["Bash", "Powershell", "Windows", "Winget"]

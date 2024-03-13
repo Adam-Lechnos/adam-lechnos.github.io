@@ -23,6 +23,10 @@ List all Public repositories
 #### [Web & App Dev](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app&type=repositories){:target="_blank" rel="noopener"}
 ##### [Web & App Dev: Ruby](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app+topic%3Aruby&type=repositories){:target="_blank" rel="noopener"}
 
+#### [Home Networking](https://github.com/search?q=user%3Aadam-lechnos+topic%3Ahome-network&type=repositories){:target="_blank" rel="noopener"}
+##### [Home Networking: Bash](https://github.com/search?q=user%3Aadam-lechnos+topic%3Ahome-network+topic%3Abash&type=repositories){:target="_blank" rel="noopener"}
+##### [Home Networking: Batch](https://github.com/search?q=user%3Aadam-lechnos+topic%3Ahome-network+topic%3Abatch&type=repositories){:target="_blank" rel="noopener"}
+
 #### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
 ##### [Finance: JavaScript](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Ajavascript&type=repositories){:target="_blank" rel="noopener"}
 
@@ -43,6 +47,9 @@ List all Public repositories
 
 #### [Web & App Dev](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app&type=repositories){:target="_blank" rel="noopener"}
 ##### [Web & App Dev: Jekyll](https://github.com/search?q=user%3Aadam-lechnos+topic%3Aweb-app+topic%3Ajekyll&type=repositories){:target="_blank" rel="noopener"}
+
+#### [Home Networking](https://github.com/search?q=user%3Aadam-lechnos+topic%3Ahome-network&type=repositories){:target="_blank" rel="noopener"}
+##### [Home Networking: Windows](https://github.com/search?q=user%3Aadam-lechnos+topic%3Ahome-network+topic%3Awindows&type=repositories){:target="_blank" rel="noopener"}
 
 #### [Finance](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial&type=repositories){:target="_blank" rel="noopener"}
 ##### [Finance: Google Apps Script](https://github.com/search?q=user%3Aadam-lechnos+topic%3Afinancial+topic%3Agoogle-apps-script&type=repositories){:target="_blank" rel="noopener"}
