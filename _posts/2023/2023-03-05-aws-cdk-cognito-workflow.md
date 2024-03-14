@@ -10,7 +10,12 @@ categories: aws devops cdk typescript
 
 ![Amazon Cognito OAuth & OIDC Workflow]({{ site.github-content }}/devops/OAuth20-Sequence-Diagram.drawio.svg?raw=true)
 
-In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Authorization"](/aws/devops/cdk/typescript/2023/02/22/aws-cdk-cognito-use.html){:target="_blank" rel="noopener"}, I go-over implementing Cognito Authentication & Authorization workflow into your application via the AWS CDK.
+In my previous blog post, ["AWS CDK - Using Amazon Cognito Authentication and Authorization"](/aws/devops/cdk/typescript/2023/02/22/aws-cdk-cognito-use.html){:target="_blank" rel="noopener"}, I go-over implementing Cognito Authentication & Authorization workflow into your application via the AWS CDK. I attempt here, to dive deeper into the workflow components as they relate to AWS Cognito in alignment with OAuth standards. For more context, reading the previous post or series of posts within the subject matter will shed more light into this deep-dive.
+
+#### AWS Cognito with CDK Post Series
+1. [AWS CDK - Understanding Amazon Cognito Authentication and Authorization](https://www.adamlechnos.com/aws/devops/cdk/typescript/2023/02/20/aws-cdk-cognito.html)
+1. [AWS CDK - Testing Amazon Cognito Authentication and Authorization](https://www.adamlechnos.com/aws/devops/cdk/typescript/2023/02/21/aws-cdk-cognito-testing.html)
+1. [AWS CDK - Using Amazon Cognito Authentication and Authorization](https://www.adamlechnos.com/aws/devops/cdk/typescript/2023/02/22/aws-cdk-cognito-use.html)
 
 ### Breaking It Down
 
@@ -49,7 +54,7 @@ I wanted to add some additional context that may have been lacking in previous b
   * Refer to the [Developer Guide](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html#cognito-user-pools-define-resource-servers-about-scopes) for Amazon Cognito Scopes for more details.
 
 ##### Example OAuth Access Token
-```
+``` json
 {
    "sub":"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
    "device_key": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
@@ -86,7 +91,7 @@ I also wanted to add a bit more clarification regarding OpenID Connect (OIDC) ID
   * Read more details about the UserInfo endpoint from the [Developer Guide](https://docs.aws.amazon.com/cognito/latest/developerguide/userinfo-endpoint.html) for Cognito.
 
 ##### Example OIDC ID Token
-```
+``` json
 {
     "sub": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
     "cognito:groups": [

@@ -431,6 +431,6 @@ JWT.io deencoded Access Token
 ```
 * The de-encoded Base64 Access Token indicates the scope values which were also attached to the resource server, `"scope": "aws.cognito.signin.user.admin openid users/read"`.
 
-**Code Snippet Credits:** [Alex Dan](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1) -modified and re-tested by me for this post
-
 The next post will go-over testing the CDK's Authorization Stack, by writing some test code in TypeScript.
+
+<sub>*[Original code snippets by Alex Dan via Udemy](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1)*<sub>

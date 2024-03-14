@@ -262,4 +262,4 @@ JWT.io deencoded Access Token
 
 * For Implicit grants, the ID and Access Tokens are returned directly within the URL.
 
-**Code Snippet Credits:** [Alex Dan](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1) -modified and re-tested by me for this post
+<sub>*[Original code snippets by Alex Dan via Udemy](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1)*<sub>

@@ -195,4 +195,4 @@ function App() {
     * `setUserNameCb` in LoginComponent is the triggers the `setUserName` 'setIndex' in App.tsx, as it's called back.
     * LoginProps type declared 'setUserNameCb' as an anonymous function, returning void as: `setUserNameCb: (userName: string) => void`
 
-**Code Snippet Credits:** [Alex Dan](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1) -modified and re-tested by me for this post
+<sub>*[Original code snippets by Alex Dan via Udemy](https://www.udemy.com/course/aws-typescript-cdk-serverless-react/?couponCode=ST15MT31224#instructor-1)*<sub>
