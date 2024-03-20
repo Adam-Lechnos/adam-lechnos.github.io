@@ -25,7 +25,6 @@ A list of searchable topics parsed across all repos
 * json
 * linux
 * monster-alerts
-* network-attached
 * network-attached-storage
 * project-management
 * python
