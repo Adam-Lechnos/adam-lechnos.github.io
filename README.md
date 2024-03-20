@@ -3,7 +3,7 @@
 > This project is a fork and has been modified from [Agus Makmum's Modified Simple Grey Theme for Jekyll](https://github.com/agusmakmun/agusmakmun.github.io)
 > and the search posts using [Super Search](https://github.com/chinchang/super-search)
 
-Use GitHub Pages with GitHub Actions to manage and update a Jekyll-based website using a custom Jekyll theme, based on a modified version of the `Simple Grey Theme`.
+Use [GitHub Pages](https://pages.github.com/) with [GitHub Actions](https://docs.github.com/en/actions/learn-github-actions) to manage and update a Jekyll-based website using a custom Jekyll theme, based on a modified version of the `Simple Grey Theme`.
 
 ### Demo
 * [https://adamlechnos.com](https://adamlechnos.com)
@@ -34,21 +34,22 @@ Use GitHub Pages with GitHub Actions to manage and update a Jekyll-based website
 
 ### Install & Configuration
 
-1. Fork this repository
-2. Edit site settings inside file of `_config.yml`
-3. Edit your projects at file of `projects.md`, `_data/projects.json` and inside path of `_project/` _(for detail project)_.
-4. Edit about yourself inside file of `about.md`
+1. Learn more about [GitHub Pages with Jekyll](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll)
+2. Fork this repository
+3. Edit site settings inside the file of `_config.yml`
+4. Edit your projects at the file of `projects.md`, `_data/projects.json`, and inside path of `_project/` _(for detail project)_.
+5. Edit about yourself inside the file of `about.md`
 
 ### How to Use?
 
 **a. Add new Category**
 
-All categories saved inside path of `category/`, you can see the existed categories.
+All categories are saved inside the path of `category/`, you can see the existing categories.
 
 **b. Add new Posts**
 
 * All posts bassed on markdown syntax _(please googling)_. allowed extensions is `*.markdown` or `*.md`.
-* This files can found at the path of `_posts/`.
+* This file can found at the path of `_posts/`.
 * and the name of files are following `<date:%Y-%m-%d>-<slug>.<extension>`, for example:
 
 ```
@@ -66,12 +67,12 @@ Inside the file of it,
 layout: post                          # (require) default post layout
 title: "Your Title"                   # (require) a string title
 date: 2016-04-20 19:51:02 +0700       # (require) a post date
-categories: [python, django]          # (custom) some categories, but makesure these categories already exists inside path of `category/`
+categories: [python, django]          # (custom) some categories, but make sure these categories already exist inside the path of `category/`
 tags: [foo, bar]                      # (custom) tags only for meta `property="article:tag"`
-image: Broadcast_Mail.png             # (custom) image only for meta `property="og:image"`, save your image inside path of `static/img/_posts`
+image: Broadcast_Mail.png             # (custom) image only for meta `property="og:image"`, save your image inside the path of `static/img/_posts`
 ---
 
-# your content post with markdown syntax goes here...
+# Your content post with markdown syntax goes here...
 ```
 
 
