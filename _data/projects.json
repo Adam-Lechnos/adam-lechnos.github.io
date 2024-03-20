@@ -1,7 +1,7 @@
 [
 	{
 		"slug": "windows-enforcer",
-		"name": "Windows Enforcer for NAS Devices",
+		"name": "Windows Endpoint Management Using NAS",
 		"image": "windows-enforcer/raw/main/windows-enforcement-diagram.drawio.png?raw=true",
 		"url": "https://github.com/Adam-Lechnos/windows-enforcer",
 		"date": "March 2023",
@@ -9,7 +9,7 @@
 	},
 	{
 		"slug": "jenkins-terraform-ansible-aws",
-		"name": "Jenkins, Terraform, and Ansible",
+		"name": "CI/CD With Jenkins, Terraform, and Ansible",
 		"image": "jenkins-tf-ansible-pipeline-sample/raw/main/images/jenkins_ansible_aws.png?raw=true",
 		"url": "https://github.com/Adam-Lechnos/jenkins-tf-ansible-pipeline-sample",
 		"date": "Jan 2023",
