@@ -29,3 +29,4 @@ EOF
 cat $scriptpath/repos.md | grep -o -P '(?<=topic%3A).*?(?=\&)' | sed 's/+topic%3A/\n/g' | sort -u | awk '{print "* " $0}' >> $scriptpath/topics.md
 echo '' >> $scriptpath/topics.md
 echo "<sub>Last automated update: $date<sub>" >> $scriptpath/topics.md
+git add . topics.md
