@@ -8,7 +8,7 @@ date=$(date +%m/%d/%Y)
 scriptpath="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 #echo $scriptpath
 
-if [ ! -f $scriptpath/topics.md]
+if [ ! -f $scriptpath/topics.md ]
 then
     touch $scriptpath/topics.md
 fi
