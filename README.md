@@ -3,6 +3,8 @@
 > This project is a fork and has been modified from [Agus Makmum's Modified Simple Grey Theme for Jekyll](https://github.com/agusmakmun/agusmakmun.github.io)
 > and the search posts using [Super Search](https://github.com/chinchang/super-search)
 
+Use GitHub Pages with GitHub Actions to manage and update a Jekyll-based website using a custom Jekyll theme, based on a modified version of the `Simple Grey Theme`.
+
 ### Demo
 * [https://adamlechnos.com](https://adamlechnos.com)
 
