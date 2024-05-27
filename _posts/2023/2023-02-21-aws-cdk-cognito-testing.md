@@ -145,7 +145,7 @@ Executing the test via the CDK CLI should print to console the ID Token, Access 
 
 ##### Example Output
 ```
---------ID TOken--------
+--------ID Token--------
 {
   toString: [Function: toString],
   payload: {

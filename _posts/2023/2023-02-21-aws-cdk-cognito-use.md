@@ -26,9 +26,9 @@ The components are stored and bundled into an S3 Bucket and served as static con
 ### Breaking It Down
 
 #### Authentication Service
-<!-- [GitHub Gist](https://gist.github.com/Adam-Lechnos/fc1a9ead7491b8435be9fe1777c36b98) -->
+[Full Code -> GitHub Gist](https://gist.github.com/Adam-Lechnos/fc1a9ead7491b8435be9fe1777c36b98){:target="_blank"}
 
-{% gist fc1a9ead7491b8435be9fe1777c36b98 %}
+<!-- {% gist fc1a9ead7491b8435be9fe1777c36b98 %} -->
 
 The authentication service code has been discussed at length, from the previous two blog posts, we perform a deep dive into creating a testing the auth service stack. The code here is identical to what we [previously](/aws/devops/cdk/typescript/2023/02/21/aws-cdk-cognito-testing.html) covered.
 
@@ -58,8 +58,8 @@ private async generateTemporaryCredentials() {
     * This is useful for delineating group permissions according to membership type, such as premium vs non-premium members.
 
 #### Login Component
-<!-- [GitHub Gist](https://gist.github.com/Adam-Lechnos/d8f8dc6d244b49fe3c6969ced5151743) -->
-{% gist d8f8dc6d244b49fe3c6969ced5151743 %}
+[Full Code -> GitHub Gist](https://gist.github.com/Adam-Lechnos/d8f8dc6d244b49fe3c6969ced5151743){:target="_blank"}
+<!-- {% gist d8f8dc6d244b49fe3c6969ced5151743 %} -->
 
 Here we break down the code used for performing the login and ensuring the user authenticated. We make extensive use of [State Hooks](https://react.dev/reference/react/hooks#state-hooks), which provide a clean way to initialize and update states across our web app.
 
@@ -140,8 +140,8 @@ return (
   * CLicking 'Submit' triggers the 'setIndex' calls to the `handleSubmit` function.
 
 #### Application Router
-<!-- [GitHub Gist](https://gist.github.com/Adam-Lechnos/5e2049715eb7ffac7162af4303017e65) -->
-{% gist 5e2049715eb7ffac7162af4303017e65 %}
+[Full Code -> GitHub Gist](https://gist.github.com/Adam-Lechnos/5e2049715eb7ffac7162af4303017e65){:target="_blank"}
+<!-- {% gist 5e2049715eb7ffac7162af4303017e65 %} -->
 
 
 Finally, the Application Router presents the code required for rendering a component based on the URL path.

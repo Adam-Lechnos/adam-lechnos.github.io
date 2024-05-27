@@ -151,8 +151,8 @@ In Cognito, both *ID Tokens* and *Access Tokens* include a `cognito:groups` clai
 Imagine if we were creating resources using CDK, and wanted to then create an Authentication Stack in order to provide authentication and authorization mechanisms for accessing these resources in AWS. Perhaps we would like to employ a token header for API access, and based on the token, claims about the user will be used in order to determine appropriate permissions. Suppose we would only grant `PUT` access to Admin users, but `GET` is always available to all users. Suppose also 
 
 ##### Breaking Down The CDK Constructs
-<!-- Refer to the [GitHub Gist](https://gist.github.com/Adam-Lechnos/52b57ccebb82360c606b82d694f74d05), containing the complete CDK for the hypothetical Authentication Stack, written in TypeScript. Here is the breakdown: -->
-{% gist 52b57ccebb82360c606b82d694f74d05 %}
+Refer to the [GitHub Gist](https://gist.github.com/Adam-Lechnos/52b57ccebb82360c606b82d694f74d05), containing the complete CDK for the hypothetical Authentication Stack, written in TypeScript. Here is the breakdown:
+<!-- {% gist 52b57ccebb82360c606b82d694f74d05 %} -->
 
 ##### Create User Pool
 ``` typescript
