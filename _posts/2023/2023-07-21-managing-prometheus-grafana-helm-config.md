@@ -1,7 +1,7 @@
 ---
 title: "Managing Configurations for Prometheus and Grafana Helm Chart"
 date: 2023-07-21 12:00:00 -0000
-categories: devops kubernetes helm observability
+categories: devops kubernetes helm observability prometheus grafana
 ---
 
 ### Diagram
