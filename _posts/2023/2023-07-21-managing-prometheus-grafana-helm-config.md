@@ -1,5 +1,5 @@
 ---
-title: "Managing Configurations for Prometheus and Grafana Helm Chart"
+title: "Managing Configurations for Prometheus and Grafana Helm Charts"
 date: 2023-07-21 12:00:00 -0000
 categories: devops kubernetes helm observability prometheus grafana
 ---
@@ -10,11 +10,32 @@ categories: devops kubernetes helm observability prometheus grafana
 
 ![Managing Prometheus and Grafana via Helm]({{ site.github-content }}/devops/DevOps-Observability-Prometheus_Grafana_Helm.drawio.svg?raw=true)
 
-When using the Helm Charts managed by the [Prometheus Monitoring Community](https://github.com/prometheus-community) repo, certain considerations should be made when managing the Prometheus configuration options such as Alert Rules and Scrape Configs. This post will attempt to break-down best practices using the Kubernetes Custom Resource Definitions (CRDs) created by the helm chart deployment.
+*This blog post is in specific reference to the [Kube Prometheus Stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) as part of the Prometheus Community, `prometheus-community/kube-prometheus-stack`*
 
-### Alert Rules
+When using the Helm Charts managed by the [Prometheus Monitoring Community](https://github.com/prometheus-community) repo, certain considerations should be made when managing the Prometheus configuration options such as Alerting Rules and Scrape Configs. This post will attempt to break-down best practices using the Kubernetes [Custom Resource Definitions](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) (CRDs) created by the helm chart deployment.
 
-The alert rules are managed by the `prometheusrules.monitoring.coreos.com` CRD which handles registering new rules to Prometheus. Learn more at the official [Prometheus Documentation - Alerting Rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
+### Why CRDs?
+
+Making changes the the CRDs objects or creating new CRDs as defined by the helm charts enables a more clean and consistent approach to managing the configuration options for Prometheus and Grafana. Changes or additions to the CRD will perform an automated config reload against the Prometheus or Grafana objects in Kubernetes. In addition, future updates the the helm charts will prevent your custom values from being overwritten.
+
+This is in contrast to making changes by first pulling in the `Values.yaml`, editing then updating the helm charts using the `-f` flag. Using this method requires a manual reload by calling the service endpoints for the Prometheus deployment using CURL.
+
+You may determine the reload endpoint by executing the following command against your Kubernetes cluster:
+ * `kubectl get sts <helm release>-prometheus-kube-prometheus-prometheus -n <namespace> -o yaml | grep reload-url`
+
+### Available Prometheus CRDs
+
+To check for available CRD object which may be editing or created, execute the following command :
+* `kubectl get crds -n <namespace>`
+
+Each of the listed CRDs may then be called against the Kubernetes API like any other Kubernetes Object, such as a Deployments or StatefulSets. For example, for the `alertmanagers.monitoring.coreos.com` CRD, you may list its existing objects by executing
+* `kubectl get alertmanagerconfigs -n <namespace>`
+
+I will now delve into the key CRDs to create/update when managing the Helm Chart Configs for Prometheus and Grafana.
+
+### Alerting Rules
+
+The alerting rules are managed by the `prometheusrules.monitoring.coreos.com` CRD which handles registering new rules to Prometheus. Learn more at the official [Prometheus Documentation - Alerting Rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
 
 Create a yaml manifest as follows to add a new alert rule:
 
@@ -118,6 +139,6 @@ You may also edit the aforementioned config values by editing the `values.yaml`.
 * Execute `helm show values prometheus-community/kube-prometheus-stack > values.yaml`
 * Edit the values.yaml for the following configuration options (examples to uncomment are provided):
   * Scrape Config - `additionalScrapeConfigs` [(example)](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml#L3812){:target="_blank" rel="noopener"}
-  * Alert Rules - `additionalPrometheusRulesMap` [(example)](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml#L194){:target="_blank" rel="noopener"}
+  * Alerting Rules - `additionalPrometheusRulesMap` [(example)](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml#L194){:target="_blank" rel="noopener"}
   * Alert Manager Config - `alertManagerConfiguration` [(example)](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml#L726){:target="_blank" rel="noopener"}
 * Execute `helm upgrade <helm release> prometheus-community/kube-prometheus-stack -f values.yaml`
