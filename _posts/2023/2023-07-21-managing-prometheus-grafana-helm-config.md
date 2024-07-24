@@ -95,7 +95,7 @@ spec:
 
 Note the `spec.namespaceSelector` and `spec.selector` to ensure the ServiceMonitor selects the Kubernetes objects containing the custom metrics URL path such as Deployments, Pods, or StatefulSets.
 
-The `spec.endpoints` section must reference a port's name inside of a service object which exposes the service objects such as NodePort or ClusterIP.
+The `spec.endpoints` section must reference a port's name inside of a Service which exposes its underlying objects such as NodePort or ClusterIP.
 
 The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get servicemonitors <helm release>-kube-prometheus-prometheus -n monitoring -o yaml | grep -i matchLabels -A`
 
