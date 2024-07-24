@@ -58,7 +58,7 @@ spec:
       annotations:
         summary: prometheus
 ```
-The `labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get prometheuses <helm release>-kube-prometheus-prometheus -n <namespace> -o yaml | grep -i matchlabels -A5`
+The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get prometheuses <helm release>-kube-prometheus-prometheus -n <namespace> -o yaml | grep -i matchlabels -A5`
 
 The output will show the `matchLabels:` selector.
 
@@ -79,15 +79,23 @@ metadata:
     app: servicemonitor-app
     release: prometheus
 spec:
+  endpoints:
+  - port: http-metrics
+    path: /url/paths
+    interval: 30s
+  namespaceSelector:
+    matchNames:
+      - service-monitor-namespace
   selector:
     matchLabels:
-      app: servicemonitor-app
-  endpoints:
-  - port: metrics
-    path: /url/paths
+      instance: service
 ```
 
-The `labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get servicemonitors <helm release>-kube-prometheus-prometheus -n monitoring -o yaml | grep -i matchLabels -A`
+Note the `spec.namespaceSelector` and `spec.selector` to ensure the ServiceMonitor selects the Kubernetes objects containing the custom metrics URL path such as Deployments, Pods, or StatefulSets.
+
+The `spec.endpoints` section must reference a port's name inside of a service object which exposes the service objects such as NodePort or ClusterIP.
+
+The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get servicemonitors <helm release>-kube-prometheus-prometheus -n monitoring -o yaml | grep -i matchLabels -A`
 
 The output will show the `matchLabels:` selector.
 
@@ -120,7 +128,7 @@ spec:
       groupBy: ["severity"]
 ```
 
-The `labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get alertmanagers <helm release>-kube-prometheus-alertmanager -n <namespace> -o yaml | grep -i selector`
+The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get alertmanagers <helm release>-kube-prometheus-alertmanager -n <namespace> -o yaml | grep -i selector`
 
 If the `alertmanagerConfigSelector` value is empty, it must first be specified by the following steps:
   * Execute `helm show values prometheus-community/kube-prometheus-stack > values.yaml`
