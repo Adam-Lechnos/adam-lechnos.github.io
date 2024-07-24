@@ -31,6 +31,8 @@ To check for available CRD object which may be editing or created, execute the f
 Each of the listed CRDs may then be called against the Kubernetes API like any other Kubernetes Object, such as a Deployments or StatefulSets. For example, for the `alertmanagers.monitoring.coreos.com` CRD, you may list its existing objects by executing
 * `kubectl get alertmanagerconfigs -n <namespace>`
 
+New resources created as defined by each of the CRDs must match the configured CRD label selector when populating the `metadata.labels` object. This enables Prometheus Service Discovery to discover the endpoints as referenced by these new resources. For example, when creating a new ServiceMonitor object for scraping a custom metrics endpoint, the endpoints referenced by the new object are not discoverable by prometheus unless the `metadata.labels` also matches the underlying CRD config.
+
 I will now delve into the key CRDs to create/update when managing the Helm Chart Configs for Prometheus and Grafana.
 
 ### Alerting Rules
