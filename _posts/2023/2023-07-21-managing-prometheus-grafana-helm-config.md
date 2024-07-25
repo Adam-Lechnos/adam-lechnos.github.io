@@ -10,9 +10,9 @@ categories: devops kubernetes helm observability prometheus grafana
 
 ![Managing Prometheus and Grafana via Helm]({{ site.github-content }}/devops/DevOps-Observability-Prometheus_Grafana_Helm.drawio.svg?raw=true)
 
-*This blog post is in specific reference to the [Kube Prometheus Stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack) as part of the Prometheus Community, `prometheus-community/kube-prometheus-stack`*
+*This blog post is in specific reference to the [Kube Prometheus Stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack){:target="_blank" rel="noopener"} as part of the Prometheus Community, `prometheus-community/kube-prometheus-stack`*
 
-When using the Helm Charts managed by the [Prometheus Monitoring Community](https://github.com/prometheus-community) repo, certain considerations should be made when managing the Prometheus configuration options such as Alerting Rules and Scrape Configs. This post will attempt to break-down best practices using the Kubernetes [Custom Resource Definitions](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) (CRDs) created by the helm chart deployment.
+When using the Helm Charts managed by the [Prometheus Monitoring Community](https://github.com/prometheus-community){:target="_blank" rel="noopener"} repo, certain considerations should be made when managing the Prometheus configuration options such as Alerting Rules and Scrape Configs. This post will attempt to break-down best practices using the Kubernetes [Custom Resource Definitions](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/){:target="_blank" rel="noopener"} (CRDs) created by the helm chart deployment.
 
 ### Why CRDs?
 
