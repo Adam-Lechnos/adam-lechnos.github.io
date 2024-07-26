@@ -19,6 +19,7 @@ When using the Helm Charts managed by the [Prometheus Monitoring Community](http
 Making changes the the CRDs objects or creating new CRDs as defined by the helm charts enables a more clean and consistent approach to managing the configuration options for Prometheus and Grafana. Changes or additions to the CRD will perform an automated config reload against the Prometheus or Grafana objects in Kubernetes. In addition, future updates the the helm charts will prevent your custom values from being overwritten.
 
 This is in contrast to making changes by first pulling in the `Values.yaml`, editing then updating the helm charts using the `-f` flag. Using this method requires a manual reload by calling the service endpoints for the Prometheus deployment using CURL.
+These CRDs are defined and managed by the [Prometheus Operator](https://artifacthub.io/packages/olm/community-operators/prometheus){:target="_blank" rel="noopener"} built into the aforementioned helm chart.
 
 You may determine the reload endpoint by executing the following command against your Kubernetes cluster:
  * `kubectl get sts <helm release>-prometheus-kube-prometheus-prometheus -n <namespace> -o yaml | grep reload-url`
@@ -66,9 +67,9 @@ The output will show the `matchLabels:` selector.
 
 ### Scrape Configs
 
-Managed by the `servicemonitor.monitoring.coreos.com` CRD which specified a set of targets and parameters describing how to scrape them. Learn more at the official [Prometheus Documentation - Configuration/Scrape Config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+Managed by the `servicemonitor.monitoring.coreos.com` CRD which specifies a set of targets and parameters describing how to scrape them. Learn more at the official [Prometheus Documentation - Configuration/Scrape Config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
-**Note:** When creating a scraper ensure a Kubernetes Service object exists exposing the service against the Pod/ReplicaSet/StatefulSet/daemonSet/Deplyoment.
+**Note:** When creating a scraper, ensure a Kubernetes Service object exists exposing the service against the Pod/ReplicaSet/StatefulSet/daemonSet/Deployment.
 
 Create a yaml manifest as follows to add a new scrape config:
 
@@ -93,13 +94,38 @@ spec:
       instance: service
 ```
 
-Note the `spec.namespaceSelector` and `spec.selector` to ensure the ServiceMonitor selects the Kubernetes objects containing the custom metrics URL path such as Deployments, Pods, or StatefulSets.
+Note the `spec.namespaceSelector` and `spec.selector` work together to ensure the ServiceMonitor selects the Kubernetes objects containing the custom metrics URL path such as Deployments, Pods, or StatefulSets.
 
 The `spec.endpoints` section must reference a port's name inside of a Service which exposes its underlying objects such as NodePort or ClusterIP.
 
 The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get servicemonitors <helm release>-kube-prometheus-prometheus -n monitoring -o yaml | grep -i matchLabels -A`
 
 The output will show the `matchLabels:` selector.
+
+#### Exporters
+Scrape Configs are also required when adding or writing a [Prometheus Exporter](https://prometheus.io/docs/instrumenting/exporters/){:target="_blank" rel="noopener"} such as for [Redis](https://prometheus.io/docs/instrumenting/exporters/){:target="_blank" rel="noopener"}.These exporters act as a translation layer between the application and Prometheus, exposing an additional `/metrics` endpoint using a sidecar container. These exporters also exist as [Docker Images](https://hub.docker.com/search?q=exporter&categories=Integration%20%26%20Delivery%2CMonitoring%20%26%20Observability){:target="_blank" rel="noopener"} in Docker Hub.
+
+It is recommended to add an Exporter, if not already built into the Helm chart maintained for the application in question, by first searching for an existing Exporter within [Artifact Hub](https://artifacthub.io/packages/search?category=4&ts_query_web=prometheus+exporter&sort=relevance&page=1){:target="_blank" rel="noopener"}.
+
+[Redis Helm Chart](https://artifacthub.io/packages/helm/bitnami/redis){:target="_blank" rel="noopener"} for example contains a sidecar container for exposing Redis application metrics.
+
+When installing an add-on Exporter via Helm, its `Values.yaml` should be updated to match the labels as specified in the `metadata.labels` above in addition to the correct Service Name and Port as determined by the Service created to expose the application.
+
+* You may use the `helm show values <repo/helm-chart> > values.yaml` and `helm install (or upgrade) <release> -f values.yaml` method to accomplish this. See the chart's documentation for more details.
+
+The `serviceMonitor` section is what instructs the helm chart to spin-up a new ServiceMonitor CRD with the correct `metadata.labels` directive in lieu of the manual steps defined above. If a comparable `serviceMonitor` directive does not exist, manual steps must be taken to create each of the ServiceMonitor as defined above. In addition, if a Service is not created which exposes the Exporter pod, create one manually.
+
+Example Exporter Match Label Config Snippet:
+``` yaml
+mongodb:
+  uri: "mongodb://mongodb-service:27017" # points to the existing Service for MongoDB
+
+serviceMonitor:
+  additionalLabels:
+    release: prometheus # must match what is configured for the ServiceMonitor CRD. 
+```
+
+Check the Service created by the Exporter's helm chart via port forwarding or creating an additional NodePort, then attempt to browse to the exposed scrape URL path, usually `/metrics`. You should also see the new ServiceMonitor listed as a Target in the Prometheus UI with its detected endpoints.
 
 ### Alert Manager Rules
 
