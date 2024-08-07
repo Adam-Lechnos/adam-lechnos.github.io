@@ -9,6 +9,7 @@ categories: devops kubernetes helm observability prometheus grafana
 #### [Managing Prometheus and Grafana via Helm (draw.io viewer)](https://app.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=DevOps-Observability-Prometheus_Grafana_Helm.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FAdam-Lechnos%2Fdiagrams-charts%2Fmain%2Fdevops%2FDevOps-Observability-Prometheus_Grafana_Helm.drawio){:target="_blank" rel="noopener"}
 
 ![Managing Prometheus and Grafana via Helm]({{ site.github-content }}/devops/DevOps-Observability-Prometheus_Grafana_Helm.drawio.svg?raw=true)
+*The Prometheus Operator manages the CRDs. The Values.yaml and CRDs impacts each object's configuration*
 
 *This blog post is in specific reference to the [Kube Prometheus Stack](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack){:target="_blank" rel="noopener"} as part of the Prometheus Community, `prometheus-community/kube-prometheus-stack`*
 
@@ -26,19 +27,19 @@ You may determine the reload endpoint by executing the following command against
 
 ### Available Prometheus CRDs
 
-To check for available CRD object which may be editing or created, execute the following command :
+To check for available CRD object which may be editing or created, execute the following command:
 * `kubectl get crds -n <namespace>`
 
 Each of the listed CRDs may then be called against the Kubernetes API like any other Kubernetes Object, such as a Deployments or StatefulSets. For example, for the `alertmanagers.monitoring.coreos.com` CRD, you may list its existing objects by executing
 * `kubectl get alertmanagerconfigs -n <namespace>`
 
-New resources created as defined by each of the CRDs must match the configured CRD label selector when populating the `metadata.labels` object. This enables Prometheus Service Discovery to discover the endpoints as referenced by these new resources. For example, when creating a new ServiceMonitor object for scraping a custom metrics endpoint, the endpoints referenced by the new object are not discoverable by prometheus unless the `metadata.labels` also matches the underlying CRD config.
+New resources created as defined by each of the CRDs must contain the configured key/value CRD label selector when populating the `metadata.labels` object. This enables Prometheus Service Discovery to discover the endpoints as referenced by these new resources. For example, when creating a new ServiceMonitor object for scraping a custom metrics endpoint, the endpoints referenced by the new object are not discoverable by prometheus unless the `metadata.labels` also matches the underlying CRD config.
 
 I will now delve into the key CRDs to create/update when managing the Helm Chart Configs for Prometheus and Grafana.
 
 ### Alerting Rules
 
-The alerting rules are managed by the `prometheusrules.monitoring.coreos.com` CRD which handles registering new rules to Prometheus. Learn more at the official [Prometheus Documentation - Alerting Rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
+The alerting rules are managed by the `prometheusrules.monitoring.coreos.com` CRD which define alert conditions for Prometheus. Learn more at the official [Prometheus Documentation - Alerting Rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
 
 Create a yaml manifest as follows to add a new alert rule:
 
@@ -61,7 +62,7 @@ spec:
       annotations:
         summary: prometheus
 ```
-The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get prometheuses <helm release>-kube-prometheus-prometheus -n <namespace> -o yaml | grep -i matchlabels -A5`
+The `metadata.labels` section must contain the key/value for what is configured for the underlying CRD. Check the existing CRD by running `kubectl get prometheuses <helm release>-kube-prometheus-prometheus -n <namespace> -o yaml | grep -i matchlabels -A5`
 
 The output will show the `matchLabels:` selector.
 
@@ -69,7 +70,7 @@ The output will show the `matchLabels:` selector.
 
 Managed by the `servicemonitor.monitoring.coreos.com` CRD which specifies a set of targets and parameters describing how to scrape them. Learn more at the official [Prometheus Documentation - Configuration/Scrape Config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
-**Note:** When creating a scraper, ensure a Kubernetes Service object exists exposing the service against the Pod/ReplicaSet/StatefulSet/daemonSet/Deployment.
+**Note:** When creating a scrape config, ensure a Kubernetes Service object exists exposing the service against the Pod/ReplicaSet/StatefulSet/daemonSet/Deployment.
 
 Create a yaml manifest as follows to add a new scrape config:
 
@@ -98,18 +99,18 @@ Note the `spec.namespaceSelector` and `spec.selector` work together to ensure th
 
 The `spec.endpoints` section must reference a port's name inside of a Service which exposes its underlying objects such as NodePort or ClusterIP.
 
-The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get servicemonitors <helm release>-kube-prometheus-prometheus -n monitoring -o yaml | grep -i matchLabels -A`
+The `metadata.labels` section must contain the key/value for what is configured for the underlying CRD. Check the existing CRD by running `kubectl get servicemonitors <helm release>-kube-prometheus-prometheus -n monitoring -o yaml | grep -i matchLabels -A`
 
 The output will show the `matchLabels:` selector.
 
 #### Exporters
-Scrape Configs are also required when adding or writing a [Prometheus Exporter](https://prometheus.io/docs/instrumenting/exporters/){:target="_blank" rel="noopener"} such as for [Redis](https://prometheus.io/docs/instrumenting/exporters/){:target="_blank" rel="noopener"}.These exporters act as a translation layer between the application and Prometheus, exposing an additional `/metrics` endpoint using a sidecar container. These exporters also exist as [Docker Images](https://hub.docker.com/search?q=exporter&categories=Integration%20%26%20Delivery%2CMonitoring%20%26%20Observability){:target="_blank" rel="noopener"} in Docker Hub.
+Scrape Configs are also required when adding or writing a [Prometheus Exporter](https://prometheus.io/docs/instrumenting/exporters/){:target="_blank" rel="noopener"} such as for [Redis](https://prometheus.io/docs/instrumenting/exporters/){:target="_blank" rel="noopener"}.These exporters act as a translation layer between the application and Prometheus, exposing an additional `/metrics` endpoint, sometimes using a sidecar container. These exporters also exist as [Docker Images](https://hub.docker.com/search?q=exporter&categories=Integration%20%26%20Delivery%2CMonitoring%20%26%20Observability){:target="_blank" rel="noopener"} in Docker Hub.
 
 It is recommended to add an Exporter, if not already built into the Helm chart maintained for the application in question, by first searching for an existing Exporter within [Artifact Hub](https://artifacthub.io/packages/search?category=4&ts_query_web=prometheus+exporter&sort=relevance&page=1){:target="_blank" rel="noopener"}.
 
 [Redis Helm Chart](https://artifacthub.io/packages/helm/bitnami/redis){:target="_blank" rel="noopener"} for example contains a sidecar container for exposing Redis application metrics.
 
-When installing an add-on Exporter via Helm, its `Values.yaml` should be updated to match the labels as specified in the `metadata.labels` above in addition to the correct Service Name and Port as determined by the Service created to expose the application.
+When installing an add-on Exporter via Helm, its `Values.yaml` should be updated to match the key/value label as specified in the `metadata.labels` above, in addition to the correct Service Name and Port as determined by the Service created to expose the application.
 
 * You may use the `helm show values <repo/helm-chart> > values.yaml` and `helm install (or upgrade) <release> -f values.yaml` method to accomplish this. See the chart's documentation for more details.
 
@@ -156,7 +157,7 @@ spec:
       groupBy: ["severity"]
 ```
 
-The `metadata.labels` section must match what is configured for the CRD. Check the existing CRD by running `kubectl get alertmanagers <helm release>-kube-prometheus-alertmanager -n <namespace> -o yaml | grep -i selector`
+The `metadata.labels` section must contain the key/value for what is configured for the underlying CRD. Check the existing CRD by running `kubectl get alertmanagers <helm release>-kube-prometheus-alertmanager -n <namespace> -o yaml | grep -i selector`
 
 If the `alertmanagerConfigSelector` value is empty, it must first be specified by the following steps:
   * Execute `helm show values prometheus-community/kube-prometheus-stack > values.yaml`
