@@ -153,7 +153,7 @@ spec:
     - matchers:
       - name: job
         value: kubernetes
-      receiver "infra"
+      receiver: "infra"
       groupBy: ["severity"]
 ```
 
