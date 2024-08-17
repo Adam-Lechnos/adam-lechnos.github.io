@@ -20,7 +20,7 @@ When using the Prometheus Monitoring Community's Kube Prometheus Stack, Service 
 
 When creating [Scrape Configs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config), along with other Prometheus configuration options, using CRDs is the best approach when applying the Kube Prometheus Stack helm chart. The chart includes the Prometheus Controller Manager and its CRDs.
 
-Using the Service Monitor CRD automatically configures the [`relabel_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) based on `spec.selector` within the manifest. The relabel config enables service discovery for the specified job being created.
+Using the Service Monitor CRD automatically configures the [`relabel_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) based on `spec.selector` within the manifest. The relabel config enables service discovery of targets for the specified job being created.
 
 Example:
 ``` yaml
@@ -78,7 +78,7 @@ Will resolve to the following Configuration:
   ...
 ```
 
-More details about the Service Monitor CRD and why use should use CRDs will be discussed further in this bog post.
+More details about Service Monitor CRDs and why CRDs in general should be used when configuring Prometheus will be discussed further in this bog post.
 
 ### Why CRDs?
 
