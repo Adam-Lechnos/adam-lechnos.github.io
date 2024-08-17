@@ -15,9 +15,74 @@ categories: devops kubernetes helm observability prometheus grafana
 
 When using the Helm Charts managed by the [Prometheus Monitoring Community](https://github.com/prometheus-community){:target="_blank" rel="noopener"} repo, certain considerations should be made when managing the Prometheus configuration options such as Alerting Rules and Scrape Configs. This post will attempt to break-down best practices using the Kubernetes [Custom Resource Definitions](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/){:target="_blank" rel="noopener"} (CRDs) created by the helm chart deployment.
 
+### Service Discovery Versus Static Configs
+When using the Prometheus Monitoring Community's Kube Prometheus Stack, Service Discovery for Kubernetes is configured. Discovery is dynamic upon the creation and destruction of objects within the cluster. Objects in Kubernetes are therefore ready for monitoring in Prometheus during their lifecycle which is accomplished using the Kubernetes API server. Service Discovery configs are used in lieu of Static Configs for dynamic metrics gathering. Refer to the [Kubernetes Service Discovery configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config) for more details.
+
+When creating [Scrape Configs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config), along with other Prometheus configuration options, using CRDs is the best approach when applying the Kube Prometheus Stack helm chart. The chart includes the Prometheus Controller Manager and its CRDs.
+
+Using the Service Monitor CRD automatically configures the [`relabel_config`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config) based on `spec.selector` within the manifest. The relabel config enables service discovery for the specified job being created.
+
+Example:
+``` yaml
+apiVersion: v1
+items:
+- apiVersion: monitoring.coreos.com/v1
+  kind: ServiceMonitor
+  metadata:
+    labels:
+      app: ibkr-dash
+      release: prometheus
+    name: ibkr-dash
+  spec:
+    endpoints:
+    - interval: 30s
+      port: metrics
+    namespaceSelector:
+      matchNames:
+      - default
+    selector:
+      matchLabels:
+        app.kubernetes.io/managed-by: Helm
+```
+Will resolve to the following Configuration:
+
+``` yaml
+- job_name: serviceMonitor/default/ibkr-dash/0
+  honor_timestamps: true
+  track_timestamps_staleness: false
+  scrape_interval: 30s
+  scrape_timeout: 10s
+  scrape_protocols:
+  - OpenMetricsText1.0.0
+  - OpenMetricsText0.0.1
+  - PrometheusText0.0.4
+  metrics_path: /metrics
+  scheme: http
+  enable_compression: true
+  follow_redirects: true
+  enable_http2: true
+  http_headers: null
+  relabel_configs:
+  - source_labels: [job]
+    separator: ;
+    regex: (.*)
+    target_label: __tmp_prometheus_job_name
+    replacement: $1
+    action: replace
+  - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_managed_by,
+      __meta_kubernetes_service_labelpresent_app_kubernetes_io_managed_by]
+    separator: ;
+    regex: (Helm);true
+    replacement: $1
+    action: keep
+  ...
+```
+
+More details about the Service Monitor CRD and why use should use CRDs will be discussed further in this bog post.
+
 ### Why CRDs?
 
-Making changes the the CRDs objects or creating new CRDs as defined by the helm charts enables a more clean and consistent approach to managing the configuration options for Prometheus and Grafana. Changes or additions to the CRD will perform an automated config reload against the Prometheus or Grafana objects in Kubernetes. In addition, future updates the the helm charts will prevent your custom values from being overwritten.
+Making changes the the CRDs objects or creating new CRDs as defined by the helm chart enables a more clean and consistent approach to managing the configuration options for Prometheus and Grafana. Changes or additions to the CRD will perform an automated config reload against the Prometheus or Grafana objects in Kubernetes. In addition, future updates the the helm charts will prevent your custom values from being overwritten.
 
 This is in contrast to making changes by first pulling in the `Values.yaml`, editing then updating the helm charts using the `-f` flag. Using this method requires a manual reload by calling the service endpoints for the Prometheus deployment using CURL.
 These CRDs are defined and managed by the [Prometheus Operator](https://artifacthub.io/packages/olm/community-operators/prometheus){:target="_blank" rel="noopener"} built into the aforementioned helm chart.
@@ -68,7 +133,7 @@ The output will show the `matchLabels:` selector.
 
 ### Scrape Configs
 
-Managed by the `servicemonitor.monitoring.coreos.com` CRD which specifies a set of targets and parameters describing how to scrape them. Learn more at the official [Prometheus Documentation - Configuration/Scrape Config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
+Managed by the `servicemonitor.monitoring.coreos.com` CRD which specifies a set of targets and parameters describing how to scrape them. One scrape config specified a single job in prometheus. Learn more at the official [Prometheus Documentation - Configuration/Scrape Config](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config).
 
 **Note:** When creating a scrape config, ensure a Kubernetes Service object exists exposing the service against the Pod/ReplicaSet/StatefulSet/daemonSet/Deployment.
 
