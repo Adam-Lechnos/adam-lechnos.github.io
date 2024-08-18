@@ -75,8 +75,21 @@ Will resolve to the following Configuration:
     regex: (Helm);true
     replacement: $1
     action: keep
-  ...
+...
+kubernetes_sd_configs:
+  - role: endpoints
+    kubeconfig_file: ""
+    follow_redirects: true
+    enable_http2: true
+    http_headers: null
+    namespaces:
+      own_namespace: false
+      names:
+      - default
 ```
+*The above YAML has been condensed as indicated by the ellipses (`...`)*
+
+Notice that the resolved scrape config includes the `kubernetes_sd_configs` for automated service discovery of endpoints created for [IBKR-Dash](https://github.com/Adam-Lechnos/IBKR-Dashboard-K8s-Helm) app within the default namespace. You may review the resolved configuration with the Prometheus UI by selecting Status -> Configuration. The application will also be populated within the Status -> Service Discovery view.
 
 More details about Service Monitor CRDs and why CRDs in general should be used when configuring Prometheus will be discussed further in this bog post.
 
