@@ -6,13 +6,5 @@
 		"url": "https://github.com/Adam-Lechnos/windows-enforcer",
 		"date": "March 2023",
 		"tags": ["Bash", "Powershell", "Windows", "Winget"]
-	},
-	{
-		"slug": "jenkins-terraform-ansible-aws",
-		"name": "CI/CD With Jenkins, Terraform, and Ansible",
-		"image": "jenkins-tf-ansible-pipeline-sample/raw/main/images/jenkins_ansible_aws.png?raw=true",
-		"url": "https://github.com/Adam-Lechnos/jenkins-tf-ansible-pipeline-sample",
-		"date": "Jan 2023",
-		"tags": ["Jenkins", "Terraform", "Ansible", "AWS"]
 	}
 ]
